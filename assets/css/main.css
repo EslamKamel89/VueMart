@@ -138,3 +138,7 @@
     @apply bg-background text-foreground;
   }
 }
+p[role="alert"] {
+  @apply text-red-700 dark:text-red-500 text-xs font-thin !mt-0 !pt-0
+}
+</style>
