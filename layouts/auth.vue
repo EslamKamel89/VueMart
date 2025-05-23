@@ -3,7 +3,7 @@ const isDark = useDark();
 const toggleDark = useToggle(isDark);
 </script>
 <template>
-  <div class="bg-muted flex min-h-screen items-center justify-center px-4">
+  <div class="bg-muted flex min-h-screen w-full items-center justify-center">
     <div>
       <Button
         @click="toggleDark(!isDark)"
@@ -15,6 +15,8 @@ const toggleDark = useToggle(isDark);
         <Icon v-else name="lucide:moon" />
       </Button>
     </div>
-    <slot />
+    <main class="my-4 flex w-full max-w-4xl justify-center">
+      <slot />
+    </main>
   </div>
 </template>
