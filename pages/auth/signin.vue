@@ -55,6 +55,10 @@ const handleSumbit = handleSubmit(async (values) => {
   isLoading.value = true;
   await sleep(3000);
   isLoading.value = false;
+  showErrorToaster({
+    title: "Success",
+    description: "You logged in to your account successfully",
+  });
 });
 </script>
 <template>
