@@ -41,7 +41,7 @@ useHead({
     { name: "theme-color", content: "#ffffff" },
   ],
 });
-
+const isLoading = ref(false);
 const signupSchema = toTypedSchema(
   z.object({
     name: z.string().min(2).max(100),
@@ -52,8 +52,11 @@ const signupSchema = toTypedSchema(
 const { isFieldDirty, handleSubmit } = useForm({
   validationSchema: signupSchema,
 });
-const handleSumbit = handleSubmit((values) => {
+const handleSumbit = handleSubmit(async (values) => {
   pr(values, "signup form - handleSubmit");
+  isLoading.value = true;
+  await sleep(3000);
+  isLoading.value = false;
 });
 </script>
 <template>
@@ -101,7 +104,10 @@ const handleSumbit = handleSubmit((values) => {
           />
 
           <!-- Submit Button -->
-          <Button type="submit" class="w-full">Sign Up</Button>
+          <Button type="submit" :disabled="isLoading" class="w-full">
+            <Icon v-if="isLoading" name="eos-icons:bubble-loading" />
+            Sign Up</Button
+          >
         </form>
       </CardContent>
 

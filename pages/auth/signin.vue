@@ -40,6 +40,7 @@ useHead({
     { name: "theme-color", content: "#ffffff" },
   ],
 });
+const isLoading = ref(false);
 const loginSchema = toTypedSchema(
   z.object({
     email: z.string().email().min(2).max(50),
@@ -49,8 +50,11 @@ const loginSchema = toTypedSchema(
 const { isFieldDirty, handleSubmit } = useForm({
   validationSchema: loginSchema,
 });
-const handleSumbit = handleSubmit((values) => {
+const handleSumbit = handleSubmit(async (values) => {
   pr(values, "login form - handleSubmit");
+  isLoading.value = true;
+  await sleep(3000);
+  isLoading.value = false;
 });
 </script>
 <template>
@@ -90,6 +94,7 @@ const handleSumbit = handleSubmit((values) => {
             placeholder="••••••••"
             type="password"
           />
+
           <div class="flex w-full justify-between">
             <SharedCheckboxFiled
               id="remember"
@@ -105,7 +110,11 @@ const handleSumbit = handleSubmit((values) => {
           </div>
 
           <!-- Submit Button -->
-          <Button type="submit" class="w-full">Sign In</Button>
+          <Button type="submit" class="w-full" :disabled="isLoading">
+            <Icon v-if="isLoading" name="eos-icons:bubble-loading" />
+
+            Sign In</Button
+          >
         </form>
       </CardContent>
 
