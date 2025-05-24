@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@nuxt/icon",
     "@pinia/nuxt",
+    "@prisma/nuxt",
   ],
   shadcn: {
     prefix: "",
