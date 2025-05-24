@@ -75,73 +75,34 @@ const handleSumbit = handleSubmit((values) => {
       <!-- Form -->
       <CardContent>
         <form @submit="handleSumbit" class="space-y-4">
-          <!-- Email Field -->
-          <FormField v-slot="{ componentField }" name="email">
-            <FormItem>
-              <FormControl>
-                <div class="space-y-2">
-                  <Label for="email" class="dark:text-white">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    v-bind="componentField"
-                    class="dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                  />
-                </div>
-              </FormControl>
-              <FormDescription />
-              <FormMessage />
-            </FormItem>
-          </FormField>
+          <SharedInputField
+            id="email"
+            label="Email"
+            name="email"
+            placeholder="you@example.com"
+            type="email"
+          />
 
-          <!-- Password Field -->
-          <FormField v-slot="{ componentField }" name="password">
-            <FormItem>
-              <FormControl>
-                <div class="space-y-2">
-                  <Label for="password" class="dark:text-white">Password</Label>
-                  <Input
-                    v-bind="componentField"
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                    class="dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                  />
-                </div>
-              </FormControl>
-              <FormDescription />
-              <FormMessage />
-            </FormItem>
-          </FormField>
-
-          <!-- Remember & Forgot -->
-          <FormField v-slot="{ componentField }" name="remember">
-            <FormItem>
-              <FormControl>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-2">
-                    <Checkbox
-                      v-bind="componentField"
-                      id="remember"
-                      class="dark:border-gray-600 dark:bg-gray-700"
-                    />
-                    <Label for="remember" class="text-sm dark:text-gray-300">
-                      Remember me
-                    </Label>
-                  </div>
-                  <a
-                    href="#"
-                    class="text-primary text-sm underline-offset-4 hover:underline dark:text-blue-400"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
-              </FormControl>
-              <FormDescription />
-              <FormMessage />
-            </FormItem>
-          </FormField>
+          <SharedInputField
+            id="password"
+            label="Password"
+            name="password"
+            placeholder="••••••••"
+            type="password"
+          />
+          <div class="flex w-full justify-between">
+            <SharedCheckboxFiled
+              id="remember"
+              name="remember"
+              label="Remeber me"
+            />
+            <a
+              href="#"
+              class="text-primary text-sm underline-offset-4 hover:underline dark:text-blue-400"
+            >
+              Forgot password?
+            </a>
+          </div>
 
           <!-- Submit Button -->
           <Button type="submit" class="w-full">Sign In</Button>

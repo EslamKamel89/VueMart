@@ -41,6 +41,7 @@ useHead({
     { name: "theme-color", content: "#ffffff" },
   ],
 });
+
 const signupSchema = toTypedSchema(
   z.object({
     name: z.string().min(2).max(100),
@@ -74,66 +75,30 @@ const handleSumbit = handleSubmit((values) => {
         </CardDescription>
       </CardHeader>
 
-      <!-- Form -->
       <CardContent>
         <form @submit="handleSumbit" class="space-y-4">
-          <FormField v-slot="{ componentField }" name="name">
-            <FormItem>
-              <FormControl>
-                <div class="space-y-2">
-                  <Label for="name" class="dark:text-white">Username</Label>
-                  <Input
-                    id="name"
-                    type="text"
-                    placeholder="John Doe"
-                    v-bind="componentField"
-                    class="dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                  />
-                </div>
-              </FormControl>
-              <FormDescription />
-              <FormMessage />
-            </FormItem>
-          </FormField>
-          <!-- Email Field -->
-          <FormField v-slot="{ componentField }" name="email">
-            <FormItem>
-              <FormControl>
-                <div class="space-y-2">
-                  <Label for="email" class="dark:text-white">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    v-bind="componentField"
-                    class="dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                  />
-                </div>
-              </FormControl>
-              <FormDescription />
-              <FormMessage />
-            </FormItem>
-          </FormField>
+          <SharedInputField
+            id="name"
+            label="Username"
+            name="name"
+            placeholder="John Doe"
+            type="text"
+          />
+          <SharedInputField
+            id="email"
+            label="Email"
+            name="email"
+            placeholder="you@example.com"
+            type="email"
+          />
 
-          <!-- Password Field -->
-          <FormField v-slot="{ componentField }" name="password">
-            <FormItem>
-              <FormControl>
-                <div class="space-y-2">
-                  <Label for="password" class="dark:text-white">Password</Label>
-                  <Input
-                    v-bind="componentField"
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                    class="dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                  />
-                </div>
-              </FormControl>
-              <FormDescription />
-              <FormMessage />
-            </FormItem>
-          </FormField>
+          <SharedInputField
+            id="password"
+            label="Password"
+            name="password"
+            placeholder="••••••••"
+            type="password"
+          />
 
           <!-- Submit Button -->
           <Button type="submit" class="w-full">Sign Up</Button>
