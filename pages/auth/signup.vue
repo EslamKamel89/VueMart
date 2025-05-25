@@ -54,6 +54,7 @@ const handleSumbit = handleSubmit(async (values) => {
     });
     pr(response, "response");
   } catch (error) {
+    handleApiError(error);
   } finally {
     isLoading.value = false;
   }
