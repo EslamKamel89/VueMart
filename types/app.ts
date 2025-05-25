@@ -3,7 +3,7 @@ export type SchemaError = {
   path: string;
 }[];
 
-function isSchemaError(error: unknown): error is SchemaError {
+export function isSchemaError(error: unknown): error is SchemaError {
   // Basic array check
   if (!Array.isArray(error)) return false;
 
