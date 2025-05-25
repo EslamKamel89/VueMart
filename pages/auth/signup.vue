@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
-import * as z from "zod";
 
 definePageMeta({
   layout: "auth",
@@ -42,21 +40,23 @@ useHead({
   ],
 });
 const isLoading = ref(false);
-const signupSchema = toTypedSchema(
-  z.object({
-    name: z.string().min(2).max(100),
-    email: z.string().email().min(2).max(100),
-    password: z.string().min(2).max(100),
-  }),
-);
+
 const { isFieldDirty, handleSubmit } = useForm({
   validationSchema: signupSchema,
 });
 const handleSumbit = handleSubmit(async (values) => {
   pr(values, "signup form - handleSubmit");
-  isLoading.value = true;
-  await sleep(3000);
-  isLoading.value = false;
+  try {
+    isLoading.value = true;
+    const response = await $fetch("/api/auth/register", {
+      body: values,
+      method: "POST",
+    });
+    pr(response, "response");
+  } catch (error) {
+  } finally {
+    isLoading.value = false;
+  }
 });
 </script>
 <template>

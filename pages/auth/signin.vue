@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
-import * as z from "zod";
 
 definePageMeta({
   layout: "auth",
@@ -41,12 +39,7 @@ useHead({
   ],
 });
 const isLoading = ref(false);
-const loginSchema = toTypedSchema(
-  z.object({
-    email: z.string().email().min(2).max(50),
-    password: z.string().min(2).max(50),
-  }),
-);
+
 const { isFieldDirty, handleSubmit } = useForm({
   validationSchema: loginSchema,
 });
