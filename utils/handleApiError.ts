@@ -1,4 +1,4 @@
-import { isSchemaError } from "~/types/app";
+import { isApiError, isSchemaError } from "~/types/app";
 
 export default function (error: unknown) {
   let message = `${error}`;
@@ -11,8 +11,14 @@ export default function (error: unknown) {
       )
       .trim();
   }
+  if (isApiError(error)) {
+    message = error.statusMessage;
+  }
+  if (typeof (error as any).message === "string") {
+    message = (error as any).message as string;
+  }
   showErrorToaster({
-    title: "Validation Error",
+    title: "Error",
     description: message,
   });
   pr(error, "Api Error");
