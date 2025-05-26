@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@pinia/nuxt",
     "@prisma/nuxt",
+    "@sidebase/nuxt-auth",
   ],
   shadcn: {
     prefix: "",

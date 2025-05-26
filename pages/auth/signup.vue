@@ -80,7 +80,7 @@ const handleSumbit = handleSubmit(async (values) => {
       </CardHeader>
 
       <CardContent>
-        <form @submit="handleSumbit" class="space-y-4">
+        <form @submit.prevent="handleSumbit" class="space-y-4">
           <SharedInputField
             id="name"
             label="Username"
