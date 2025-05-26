@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from "vee-validate";
+import type { User } from "~/types/db";
 
 definePageMeta({
   layout: "auth",
@@ -41,18 +42,23 @@ useHead({
 });
 const isLoading = ref(false);
 
-const { isFieldDirty, handleSubmit } = useForm({
+const { isFieldDirty, handleSubmit, resetForm } = useForm({
   validationSchema: signupSchema,
 });
 const handleSumbit = handleSubmit(async (values) => {
   pr(values, "signup form - handleSubmit");
   try {
     isLoading.value = true;
-    const response = await $fetch("/api/auth/register", {
+    const user = await $fetch<User>("/api/auth/register", {
       body: values,
       method: "POST",
     });
-    pr(response, "response");
+    pr(user, "user");
+    resetForm();
+    showSuccessToaster({
+      title: "Success",
+      description: "Your account has been created successfully",
+    });
   } catch (error) {
     handleApiError(error);
   } finally {
