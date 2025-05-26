@@ -24,6 +24,12 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     baseURL: process.env.AUTH_ORIGIN || "http://localhost:3000",
+    authSecret: "",
+    githubId: "",
+    githubSecret: "",
+    googleId: "",
+    googleSecret: "",
+    authOrigin: "",
   },
   auth: {
     baseURL: process.env.AUTH_ORIGIN || "http://localhost:3000",

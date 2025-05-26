@@ -1,6 +1,6 @@
+import bcrypt from "bcrypt";
 import prisma from "~/utils/db";
 import { signupSchema } from "~/utils/validation";
-
 export default defineEventHandler(async (event) => {
   const body = await signupSchema.parse(await readBody(event));
   if (body.errors.length) return body.errors;
@@ -13,8 +13,12 @@ export default defineEventHandler(async (event) => {
       statusMessage: "This email is already taken",
     });
   }
+  const hashedPassword = await bcrypt.hash(body.value!.password, 12);
   const newUser = prisma.user.create({
-    data: body.value!,
+    data: {
+      ...body.value!,
+      password: hashedPassword,
+    },
   });
   return newUser;
 });

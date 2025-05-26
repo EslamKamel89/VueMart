@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Github } from "lucide-vue-next";
 import { useForm } from "vee-validate";
 
 definePageMeta({
@@ -115,7 +116,26 @@ const handleSumbit = handleSubmit(async (values) => {
         </form>
       </CardContent>
 
-      <CardFooter> </CardFooter>
+      <CardFooter>
+        <div class="h-full w-full">
+          <div class="flex w-full items-center justify-center overflow-hidden">
+            <div class="w-full border border-b" />
+            <div class="text-muted-foreground block w-[300px] text-sm">
+              Or Continue With
+            </div>
+            <div class="w-full border border-b" />
+          </div>
+          <div class="mt-4 flex w-full justify-center space-x-4">
+            <Button variant="outline">
+              <Github class="mr-2 h-4 w-4" /> Github
+            </Button>
+            <Button variant="outline">
+              <Icon name="mynaui:brand-google-solid" class="mr-2 h-4 w-4" />
+              Google
+            </Button>
+          </div>
+        </div>
+      </CardFooter>
     </Card>
 
     <!-- Footer -->
