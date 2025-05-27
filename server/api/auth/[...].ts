@@ -15,11 +15,13 @@ export default NuxtAuthHandler({
       clientId: config.githubId,
       clientSecret: config.githubSecret,
     }),
-    GoogleProvider({
+    // @ts-ignore
+    GoogleProvider.default({
       clientId: config.googleId,
       clientSecret: config.googleSecret,
     }),
-    CredentialsProvider({
+    // @ts-ignore
+    CredentialsProvider.default({
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },

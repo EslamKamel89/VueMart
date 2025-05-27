@@ -31,20 +31,20 @@ export default defineNuxtConfig({
     googleSecret: "",
     authOrigin: "",
   },
-  auth: {
-    baseURL: process.env.AUTH_ORIGIN || "http://localhost:3000",
-    originEnvKey: "AUTH_ORIGIN",
-    provider: {
-      type: "local",
-      endpoints: {
-        signIn: { path: "/api/auth/login", method: "post" },
-        signUp: { path: "/api/auth/register", method: "post" },
-        signOut: { path: "/api/auth/logout", method: "post" },
-        getSession: { path: "/api/auth/session", method: "get" },
-      },
-      token: {
-        signInResponseTokenPointer: "/token",
-      },
-    },
-  },
+  // auth: {
+  //   baseURL: process.env.AUTH_ORIGIN || "http://localhost:3000",
+  //   originEnvKey: "AUTH_ORIGIN",
+  //   provider: {
+  //     type: "local",
+  //     endpoints: {
+  //       signIn: { path: "/api/auth/login", method: "post" },
+  //       signUp: { path: "/api/auth/register", method: "post" },
+  //       signOut: { path: "/api/auth/logout", method: "post" },
+  //       getSession: { path: "/api/auth/session", method: "get" },
+  //     },
+  //     token: {
+  //       signInResponseTokenPointer: "/token",
+  //     },
+  //   },
+  // },
 });
