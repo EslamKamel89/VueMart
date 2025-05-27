@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Github } from "lucide-vue-next";
 import { useForm } from "vee-validate";
+import type { User } from "~/types/db";
 
 definePageMeta({
   layout: "auth",
@@ -41,18 +42,35 @@ useHead({
 });
 const isLoading = ref(false);
 
-const { isFieldDirty, handleSubmit } = useForm({
+const { isFieldDirty, handleSubmit, resetForm } = useForm({
   validationSchema: loginSchema,
 });
 const handleSumbit = handleSubmit(async (values) => {
   pr(values, "login form - handleSubmit");
-  isLoading.value = true;
-  await sleep(3000);
-  isLoading.value = false;
-  showSuccessToaster({
-    title: "Success",
-    description: "You logged in to your account successfully",
-  });
+  try {
+    isLoading.value = true;
+    const user = await $fetch<User>("/api/auth/login", {
+      body: values,
+      method: "POST",
+    });
+    pr(user, "user");
+    resetForm();
+    if (user) {
+      showSuccessToaster({
+        title: "Success",
+        description: "Your are logged in scuccessfully",
+      });
+    } else {
+      showErrorToaster({
+        title: "Error",
+        description: "Unkwown error occurred while logging in",
+      });
+    }
+  } catch (error) {
+    handleApiError(error);
+  } finally {
+    isLoading.value = false;
+  }
 });
 </script>
 <template>
@@ -76,7 +94,7 @@ const handleSumbit = handleSubmit(async (values) => {
 
       <!-- Form -->
       <CardContent>
-        <form @submit="handleSumbit" class="space-y-4">
+        <form @submit.prevent="handleSumbit" class="space-y-4">
           <SharedInputField
             id="email"
             label="Email"
