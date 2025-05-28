@@ -7,6 +7,12 @@ const socialAction = async (provider: string) => {
   provider == "github"
     ? (githubLoading.value = true)
     : (googleLoading.value = true);
+  if (provider == "github") {
+    window.location.href = useRuntimeConfig().public.githubRedirectUrl;
+  }
+  if (provider == "google") {
+    window.location.href = useRuntimeConfig().public.googleRedirectUrl;
+  }
   // const result = await signIn(provider, { redirect: false });
   // if (result?.ok && !result?.error) {
   //   showSuccessToaster({

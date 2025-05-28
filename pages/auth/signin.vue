@@ -80,7 +80,6 @@ const handleSumbit = handleSubmit(async (values) => {
 
     <!-- Card -->
     <Card class="w-full bg-white shadow-lg dark:bg-gray-900">
-      <Button v-if="false" type="button">Sign out</Button>
       <CardHeader>
         <CardTitle class="text-xl dark:text-white">Login</CardTitle>
         <CardDescription class="dark:text-gray-400">

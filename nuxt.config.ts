@@ -27,5 +27,11 @@ export default defineNuxtConfig({
     sessionPassword: "",
     githubId: "",
     githubSecret: "",
+    googleId: "",
+    googleSecret: "",
+    public: {
+      githubRedirectUrl: "",
+      googleRedirectUrl: "",
+    },
   },
 });
