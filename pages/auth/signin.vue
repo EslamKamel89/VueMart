@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { Github } from "lucide-vue-next";
 import { useForm } from "vee-validate";
-import type { User } from "~/types/db";
 
 definePageMeta({
   layout: "auth",
@@ -40,25 +38,22 @@ useHead({
     { name: "theme-color", content: "#ffffff" },
   ],
 });
-const isLoading = ref(false);
+const loginLoading = ref(false);
 
 const { isFieldDirty, handleSubmit, resetForm } = useForm({
   validationSchema: loginSchema,
 });
+const { signIn, signOut, data: session, status } = useAuth();
 const handleSumbit = handleSubmit(async (values) => {
   pr(values, "login form - handleSubmit");
   try {
-    isLoading.value = true;
-    const user = await $fetch<User>("/api/auth/login", {
-      body: values,
-      method: "POST",
-    });
-    pr(user, "user");
-    resetForm();
-    if (user) {
+    loginLoading.value = true;
+
+    const result = await signIn("credentials", { ...values, redirect: false });
+    if (result?.ok && !result?.error) {
       showSuccessToaster({
         title: "Success",
-        description: "Your are logged in scuccessfully",
+        description: "You are logged in successfully",
       });
     } else {
       showErrorToaster({
@@ -66,10 +61,11 @@ const handleSumbit = handleSubmit(async (values) => {
         description: "Unkwown error occurred while logging in",
       });
     }
+    // if(result.)
   } catch (error) {
     handleApiError(error);
   } finally {
-    isLoading.value = false;
+    loginLoading.value = false;
   }
 });
 </script>
@@ -85,6 +81,9 @@ const handleSumbit = handleSubmit(async (values) => {
 
     <!-- Card -->
     <Card class="w-full bg-white shadow-lg dark:bg-gray-900">
+      <Button v-if="session?.user?.email" type="button" @click="signOut"
+        >Sign out</Button
+      >
       <CardHeader>
         <CardTitle class="text-xl dark:text-white">Login</CardTitle>
         <CardDescription class="dark:text-gray-400">
@@ -126,33 +125,15 @@ const handleSumbit = handleSubmit(async (values) => {
           </div>
 
           <!-- Submit Button -->
-          <Button type="submit" class="w-full" :disabled="isLoading">
-            <Icon v-if="isLoading" name="eos-icons:bubble-loading" />
-
+          <Button type="submit" class="w-full" :disabled="loginLoading">
+            <Icon v-if="loginLoading" name="eos-icons:bubble-loading" />
             Sign In</Button
           >
         </form>
       </CardContent>
 
       <CardFooter>
-        <div class="h-full w-full">
-          <div class="flex w-full items-center justify-center overflow-hidden">
-            <div class="w-full border border-b" />
-            <div class="text-muted-foreground block w-[300px] text-sm">
-              Or Continue With
-            </div>
-            <div class="w-full border border-b" />
-          </div>
-          <div class="mt-4 flex w-full justify-center space-x-4">
-            <Button variant="outline">
-              <Github class="mr-2 h-4 w-4" /> Github
-            </Button>
-            <Button variant="outline">
-              <Icon name="mynaui:brand-google-solid" class="mr-2 h-4 w-4" />
-              Google
-            </Button>
-          </div>
-        </div>
+        <AuthSocial />
       </CardFooter>
     </Card>
 
