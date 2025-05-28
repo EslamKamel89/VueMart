@@ -1,3 +1,4 @@
+import { sanitizeUser } from "~/server/utils/auth";
 import prisma from "~/utils/db";
 
 export default defineOAuthGitHubEventHandler({
@@ -44,7 +45,7 @@ export default defineOAuthGitHubEventHandler({
       });
     }
     await setUserSession(event, {
-      user: currentUser,
+      user: sanitizeUser(currentUser),
     });
     return sendRedirect(event, "/");
   },
