@@ -1,3 +1,5 @@
+import prisma from "~/utils/db";
+
 export default defineOAuthGitHubEventHandler({
   config: {
     emailRequired: true,
@@ -5,8 +7,44 @@ export default defineOAuthGitHubEventHandler({
     clientSecret: useRuntimeConfig().githubSecret,
   },
   async onSuccess(event, { user, tokens }) {
+    let currentUser = await prisma.user.findUnique({
+      where: { email: user.email! },
+    });
+    if (currentUser) {
+      let authAccount = await prisma.authAccount.findFirst({
+        where: {
+          userId: currentUser.id,
+          AND: {
+            providerId: "github",
+          },
+        },
+      });
+      if (!authAccount) {
+        authAccount = await prisma.authAccount.create({
+          data: {
+            userId: currentUser.id,
+            providerId: "github",
+            providerUserId: user.id + "",
+          },
+        });
+      }
+    } else {
+      currentUser = await prisma.user.create({
+        data: {
+          name: user.name,
+          email: user.email!,
+          avatarUrl: user.avatar_url,
+          authAccounts: {
+            create: {
+              providerId: "github",
+              providerUserId: user.id + "",
+            },
+          },
+        },
+      });
+    }
     await setUserSession(event, {
-      user,
+      user: currentUser,
     });
     return sendRedirect(event, "/");
   },
