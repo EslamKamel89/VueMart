@@ -15,20 +15,17 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@nuxt/icon",
     "@pinia/nuxt",
-    "@prisma/nuxt",
     // "@sidebase/nuxt-auth",
+    "@prisma/nuxt",
+    "nuxt-auth-utils",
   ],
   shadcn: {
     prefix: "",
     componentDir: "./components/ui",
   },
   runtimeConfig: {
-    baseURL: process.env.AUTH_ORIGIN || "http://localhost:3000",
-    authSecret: "",
+    sessionPassword: "",
     githubId: "",
     githubSecret: "",
-    googleId: "",
-    googleSecret: "",
-    authOrigin: "",
   },
 });
