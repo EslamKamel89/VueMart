@@ -43,24 +43,23 @@ const loginLoading = ref(false);
 const { isFieldDirty, handleSubmit, resetForm } = useForm({
   validationSchema: loginSchema,
 });
-const { signIn, signOut, data: session, status } = useAuth();
 const handleSumbit = handleSubmit(async (values) => {
   pr(values, "login form - handleSubmit");
   try {
     loginLoading.value = true;
 
-    const result = await signIn("credentials", { ...values, redirect: false });
-    if (result?.ok && !result?.error) {
-      showSuccessToaster({
-        title: "Success",
-        description: "You are logged in successfully",
-      });
-    } else {
-      showErrorToaster({
-        title: "Error",
-        description: "Unkwown error occurred while logging in",
-      });
-    }
+    // const result = await signIn("credentials", { ...values, redirect: false });
+    // if (result?.ok && !result?.error) {
+    //   showSuccessToaster({
+    //     title: "Success",
+    //     description: "You are logged in successfully",
+    //   });
+    // } else {
+    //   showErrorToaster({
+    //     title: "Error",
+    //     description: "Unkwown error occurred while logging in",
+    //   });
+    // }
     // if(result.)
   } catch (error) {
     handleApiError(error);
@@ -81,9 +80,7 @@ const handleSumbit = handleSubmit(async (values) => {
 
     <!-- Card -->
     <Card class="w-full bg-white shadow-lg dark:bg-gray-900">
-      <Button v-if="session?.user?.email" type="button" @click="signOut"
-        >Sign out</Button
-      >
+      <Button v-if="false" type="button">Sign out</Button>
       <CardHeader>
         <CardTitle class="text-xl dark:text-white">Login</CardTitle>
         <CardDescription class="dark:text-gray-400">

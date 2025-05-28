@@ -3,23 +3,22 @@ import { GithubIcon } from "lucide-vue-next";
 
 const githubLoading = ref(false);
 const googleLoading = ref(false);
-const { signIn, signOut, data: session } = useAuth();
 const socialAction = async (provider: string) => {
   provider == "github"
     ? (githubLoading.value = true)
     : (googleLoading.value = true);
-  const result = await signIn(provider, { redirect: false });
-  if (result?.ok && !result?.error) {
-    showSuccessToaster({
-      title: "Success",
-      description: "You are logged in successfully with " + provider,
-    });
-  } else {
-    showErrorToaster({
-      title: "Error",
-      description: "Unkwown error occurred while logging in with " + provider,
-    });
-  }
+  // const result = await signIn(provider, { redirect: false });
+  // if (result?.ok && !result?.error) {
+  //   showSuccessToaster({
+  //     title: "Success",
+  //     description: "You are logged in successfully with " + provider,
+  //   });
+  // } else {
+  //   showErrorToaster({
+  //     title: "Error",
+  //     description: "Unkwown error occurred while logging in with " + provider,
+  //   });
+  // }
   provider == "github"
     ? (githubLoading.value = false)
     : (googleLoading.value = false);
