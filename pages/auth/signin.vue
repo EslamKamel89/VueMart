@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from "vee-validate";
+import type { User } from "~/types/db";
 
 definePageMeta({
   layout: "auth",
@@ -43,24 +44,30 @@ const loginLoading = ref(false);
 const { isFieldDirty, handleSubmit, resetForm } = useForm({
   validationSchema: loginSchema,
 });
+const { fetch } = useUserSession();
 const handleSumbit = handleSubmit(async (values) => {
   pr(values, "login form - handleSubmit");
   try {
     loginLoading.value = true;
-
-    // const result = await signIn("credentials", { ...values, redirect: false });
-    // if (result?.ok && !result?.error) {
-    //   showSuccessToaster({
-    //     title: "Success",
-    //     description: "You are logged in successfully",
-    //   });
-    // } else {
-    //   showErrorToaster({
-    //     title: "Error",
-    //     description: "Unkwown error occurred while logging in",
-    //   });
-    // }
-    // if(result.)
+    const user = await $fetch<User>("/api/auth/login", {
+      body: values,
+      method: "POST",
+    });
+    pr(user, "user");
+    if (user) {
+      showSuccessToaster({
+        title: "Success",
+        description: "Your logged in your account successfully",
+      });
+      resetForm();
+      await fetch();
+      await navigateTo("/");
+    } else {
+      showErrorToaster({
+        title: "Error",
+        description: "Unknown error occured",
+      });
+    }
   } catch (error) {
     handleApiError(error);
   } finally {

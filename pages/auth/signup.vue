@@ -45,6 +45,7 @@ const isLoading = ref(false);
 const { isFieldDirty, handleSubmit, resetForm } = useForm({
   validationSchema: signupSchema,
 });
+const { fetch } = useUserSession();
 const handleSumbit = handleSubmit(async (values) => {
   pr(values, "signup form - handleSubmit");
   try {
@@ -54,11 +55,20 @@ const handleSumbit = handleSubmit(async (values) => {
       method: "POST",
     });
     pr(user, "user");
-    resetForm();
-    showSuccessToaster({
-      title: "Success",
-      description: "Your account has been created successfully",
-    });
+    if (user) {
+      showSuccessToaster({
+        title: "Success",
+        description: "Your account is created successfully",
+      });
+      resetForm();
+      await fetch();
+      await navigateTo("/");
+    } else {
+      showErrorToaster({
+        title: "Error",
+        description: "Unknown error occured",
+      });
+    }
   } catch (error) {
     handleApiError(error);
   } finally {

@@ -1,9 +1,10 @@
-import bcrypt from "bcrypt";
 import prisma from "~/utils/db";
 import { loginSchema } from "~/utils/validation";
 
 export default defineEventHandler(async (event) => {
-  const body = await loginSchema.parse(await readBody(event));
+  const body = await readValidatedBody(event, (body) =>
+    loginSchema.parse(body as any),
+  );
   if (body.errors.length) return body.errors;
   const user = await prisma.user.findUnique({
     where: { email: body.value?.email },
@@ -14,9 +15,9 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Invalid email or password",
     });
   }
-  const isPasswordValid = await bcrypt.compare(
-    body.value!.password,
+  const isPasswordValid = await verifyPassword(
     user?.password!,
+    body.value!.password,
   );
   if (!isPasswordValid) {
     throw createError({
@@ -24,5 +25,8 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Invalid email or password",
     });
   }
-  return user;
+  await setUserSession(event, {
+    user: sanitizeUser(user),
+  });
+  return sanitizeUser(user);
 });
