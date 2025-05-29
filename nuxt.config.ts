@@ -40,7 +40,6 @@ export default defineNuxtConfig({
       googleRedirectUrl: "",
     },
   },
-  // @ts-ignore
   nodemailer: {
     from: "",
     host: "",

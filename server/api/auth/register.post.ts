@@ -1,3 +1,5 @@
+import { generateOtp } from "~/server/utils/generateOtp";
+import { sendVerficiationEmail } from "~/server/utils/sendEmailVerification";
 import prisma from "~/utils/db";
 import { signupSchema } from "~/utils/validation";
 export default defineEventHandler(async (event) => {
@@ -14,10 +16,13 @@ export default defineEventHandler(async (event) => {
     });
   }
   const hashedPassword = await hashPassword(body.password!);
+  const otp = generateOtp();
+  await sendVerficiationEmail(body.email, otp);
   const newUser = await prisma.user.create({
     data: {
       ...body,
       password: hashedPassword,
+      otpCode: otp,
     },
   });
   await setUserSession(event, {

@@ -2,7 +2,9 @@ export type User = {
   id: number;
   name?: string | null;
   email: string;
-  avatarUrl?: String | null;
+  avatarUrl?: string | null;
+  verifiedAt?: Date | null;
+  otpCode?: string | null;
   password?: string | null;
   createdAt: Date;
   updatedAt: Date;
