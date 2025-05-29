@@ -1,5 +1,4 @@
 import tailwindcss from "@tailwindcss/vite";
-const config = useRuntimeConfig();
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-05-15",
@@ -43,13 +42,13 @@ export default defineNuxtConfig({
   },
   // @ts-ignore
   nodemailer: {
-    from: config.nodemailer.from,
-    host: config.nodemailer.host,
-    port: config.nodemailer.port,
+    from: "",
+    host: "",
+    port: "",
     secure: true,
     auth: {
-      user: config.nodemailer.auth.user,
-      pass: config.nodemailer.auth.pass,
+      user: "",
+      pass: "",
     },
   },
 });

@@ -17,6 +17,7 @@ model User {
   name         String?
   avatarUrl    String?
   password     String?
+  verifiedAt   DateTime?
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   authAccounts AuthAccount[]
