@@ -5,9 +5,8 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, (body) =>
     loginSchema.parse(body as any),
   );
-  if (body.errors.length) return body.errors;
   const user = await prisma.user.findUnique({
-    where: { email: body.value?.email },
+    where: { email: body?.email },
   });
   if (!user) {
     throw createError({
@@ -15,10 +14,7 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Invalid email or password",
     });
   }
-  const isPasswordValid = await verifyPassword(
-    user?.password!,
-    body.value!.password,
-  );
+  const isPasswordValid = await verifyPassword(user?.password!, body.password);
   if (!isPasswordValid) {
     throw createError({
       statusCode: 400,

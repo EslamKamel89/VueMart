@@ -1,5 +1,5 @@
 import tailwindcss from "@tailwindcss/vite";
-
+const config = useRuntimeConfig();
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-05-15",
@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     // "@sidebase/nuxt-auth",
     "@prisma/nuxt",
     "nuxt-auth-utils",
+    "nuxt-nodemailer",
   ],
   shadcn: {
     prefix: "",
@@ -29,9 +30,26 @@ export default defineNuxtConfig({
     githubSecret: "",
     googleId: "",
     googleSecret: "",
+    // nodemailerFrom: "",
+    // nodemailerHost: "",
+    // nodemailerPort: "",
+    // nodemailerSecure: "",
+    // nodemailerAuthUser: "",
+    // nodemailerAuthPass: "",
     public: {
       githubRedirectUrl: "",
       googleRedirectUrl: "",
+    },
+  },
+  // @ts-ignore
+  nodemailer: {
+    from: config.nodemailer.from,
+    host: config.nodemailer.host,
+    port: config.nodemailer.port,
+    secure: true,
+    auth: {
+      user: config.nodemailer.auth.user,
+      pass: config.nodemailer.auth.pass,
     },
   },
 });

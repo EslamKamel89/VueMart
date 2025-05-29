@@ -39,6 +39,8 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "nodemailer": "^6.10.1",
+    "nuxt-nodemailer": "^1.1.2",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "typescript": "^5.8.3"

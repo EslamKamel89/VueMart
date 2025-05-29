@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
 import type { User } from "~/types/db";
-
 definePageMeta({
   layout: "auth",
 });
@@ -43,7 +43,7 @@ useHead({
 const isLoading = ref(false);
 
 const { isFieldDirty, handleSubmit, resetForm } = useForm({
-  validationSchema: signupSchema,
+  validationSchema: toTypedSchema(signupSchema),
 });
 const { fetch } = useUserSession();
 const handleSumbit = handleSubmit(async (values) => {
