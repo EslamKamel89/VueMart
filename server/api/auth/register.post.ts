@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     });
   }
   const hashedPassword = await hashPassword(body.password!);
-  const otp = generateOtp();
+  const otp = generateOtp(6);
   await sendVerficiationEmail(body.email, otp);
   const newUser = await prisma.user.create({
     data: {

@@ -62,7 +62,7 @@ const handleSumbit = handleSubmit(async (values) => {
       });
       resetForm();
       await fetch();
-      await navigateTo("/");
+      await navigateTo("/auth/email-verification");
     } else {
       showErrorToaster({
         title: "Error",
