@@ -30,3 +30,10 @@ export const showErrorToaster = ({
     // },
   });
 };
+
+export const showGenericErrorMessage = () => {
+  showErrorToaster({
+    title: "Error",
+    description: "Something went wrong, please try againg later",
+  });
+};

@@ -19,7 +19,7 @@ export default function (error: unknown) {
   }
   showErrorToaster({
     title: "Error",
-    description: message,
+    description: message.split(":").reverse()[0],
   });
   pr(error, "Api Error");
 }

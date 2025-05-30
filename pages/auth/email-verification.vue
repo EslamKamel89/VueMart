@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import VOtpInput from "vue3-otp-input";
+import type { SanitizedUser } from "~/server/utils/auth";
 
 const otpInput = ref<InstanceType<typeof VOtpInput> | null>(null);
 const bindModal = ref("");
@@ -27,7 +28,22 @@ const otpValue = ref<string>();
 const isLoading = ref(false);
 const validateOtp = async () => {
   isLoading.value = true;
-  await sleep(2000);
+  try {
+    const user = await $fetch<SanitizedUser | null | undefined>(
+      "/api/auth/email-verification.",
+      {
+        method: "POST",
+        body: { otp: otpValue.value },
+      },
+    );
+    if (user) {
+      navigateTo("/");
+    } else {
+      showGenericErrorMessage();
+    }
+  } catch (error) {
+    handleApiError(error);
+  }
   isLoading.value = false;
 };
 </script>

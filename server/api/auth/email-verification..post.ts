@@ -9,5 +9,20 @@ export default defineEventHandler(async (event) => {
       statusMessage: "OTP is recieved",
     });
   }
-  const user = await prisma.user.findUnique({ where: { id: session.user.id } });
+  let user = await prisma.user.findUnique({ where: { id: session.user.id } });
+  if (user?.otpCode != otp) {
+    throw createError({
+      statusCode: 401,
+      statusMessage: "OTP is incorrect",
+    });
+  } else {
+    user = await prisma.user.update({
+      where: { id: session.user.id },
+      data: { verifiedAt: new Date() },
+    });
+    await setUserSession(event, {
+      user: sanitizeUser(user),
+    });
+    return sanitizeUser(user);
+  }
 });
