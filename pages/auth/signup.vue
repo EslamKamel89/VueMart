@@ -46,8 +46,10 @@ const { isFieldDirty, handleSubmit, resetForm } = useForm({
   validationSchema: toTypedSchema(signupSchema),
 });
 const { fetch } = useUserSession();
+const authStore = useAuthStore();
 const handleSumbit = handleSubmit(async (values) => {
   pr(values, "signup form - handleSubmit");
+  authStore.updateUserEmail(values.email);
   try {
     isLoading.value = true;
     const user = await $fetch<User>("/api/auth/register", {

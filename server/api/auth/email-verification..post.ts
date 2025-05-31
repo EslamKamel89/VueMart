@@ -1,15 +1,23 @@
 import prisma from "~/utils/db";
 
 export default defineEventHandler(async (event) => {
-  const session = await requireUserSession(event);
-  const { otp } = await readBody<{ otp?: string | null }>(event);
-  if (!otp) {
+  const { otp, email } = await readBody<{
+    otp?: string | null;
+    email?: string | null;
+  }>(event);
+  if (!otp || !email) {
     throw createError({
       statusCode: 401,
-      statusMessage: "OTP is recieved",
+      statusMessage: "Email or OTP is missing",
     });
   }
-  let user = await prisma.user.findUnique({ where: { id: session.user.id } });
+  let user = await prisma.user.findUnique({ where: { email: email } });
+  if (!user) {
+    throw createError({
+      statusCode: 401,
+      statusMessage: "We don't have a user with this email",
+    });
+  }
   if (user?.otpCode != otp) {
     throw createError({
       statusCode: 401,
@@ -17,7 +25,7 @@ export default defineEventHandler(async (event) => {
     });
   } else {
     user = await prisma.user.update({
-      where: { id: session.user.id },
+      where: { email: email },
       data: { verifiedAt: new Date() },
     });
     await setUserSession(event, {

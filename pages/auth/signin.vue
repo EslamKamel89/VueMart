@@ -45,8 +45,10 @@ const { isFieldDirty, handleSubmit, resetForm } = useForm({
   validationSchema: toTypedSchema(loginSchema),
 });
 const { fetch } = useUserSession();
+const authStore = useAuthStore();
 const handleSumbit = handleSubmit(async (values) => {
   pr(values, "login form - handleSubmit");
+  authStore.updateUserEmail(values.email);
   try {
     loginLoading.value = true;
     const user = await $fetch<User>("/api/auth/login", {

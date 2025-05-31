@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { toTypedSchema } from "@vee-validate/zod";
+import { useField } from "vee-validate";
 import { ref } from "vue";
 import VOtpInput from "vue3-otp-input";
-import type { SanitizedUser } from "~/server/utils/auth";
 
 const otpInput = ref<InstanceType<typeof VOtpInput> | null>(null);
-const bindModal = ref("");
 definePageMeta({
   layout: "auth",
 });
@@ -26,14 +26,32 @@ const fillInput = (value: string) => {
 };
 const otpValue = ref<string>();
 const isLoading = ref(false);
+const authStore = useAuthStore();
+const { value: email, errorMessage } = useField(
+  "email",
+  toTypedSchema(emailSchema),
+);
+watch(
+  () => authStore.userEmail,
+  () => {
+    email.value = authStore.userEmail ?? "";
+  },
+);
 const validateOtp = async () => {
+  if (errorMessage.value) {
+    showErrorToaster({
+      title: "Validation Error",
+      description: errorMessage.value ?? "Something went wrong",
+    });
+    return;
+  }
   isLoading.value = true;
   try {
     const user = await $fetch<SanitizedUser | null | undefined>(
       "/api/auth/email-verification.",
       {
         method: "POST",
-        body: { otp: otpValue.value },
+        body: { otp: otpValue.value, email: authStore.userEmail },
       },
     );
     if (user) {
@@ -55,6 +73,8 @@ const validateOtp = async () => {
         <CardTitle class="text-xl dark:text-white">
           Verify Your Email</CardTitle
         >
+        <Input v-model="authStore.userEmail" />
+        <div class="text-xs text-red-500">{{ errorMessage }}</div>
         <CardDescription class="dark:text-gray-400">
           Please enter the 6-digit code sent to your email address to complete
           verification.

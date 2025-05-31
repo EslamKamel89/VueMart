@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout>
     <NuxtPage />
-    <div class="fixed right-0 bottom-0">
+    <div class="fixed right-5 bottom-5">
       <ClientOnly>
         <Toaster />
       </ClientOnly>

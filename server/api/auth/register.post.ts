@@ -25,8 +25,8 @@ export default defineEventHandler(async (event) => {
       otpCode: otp,
     },
   });
-  await setUserSession(event, {
-    user: sanitizeUser(newUser),
-  });
+  // await setUserSession(event, {
+  //   user: sanitizeUser(newUser),
+  // });
   return sanitizeUser(newUser);
 });

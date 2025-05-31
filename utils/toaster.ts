@@ -8,7 +8,8 @@ export const showSuccessToaster = ({
     description: description,
     position: "bottom-right",
     richColors: true,
-    class: "bg-primary p-2 rounded shadow text-black text-sm",
+    class:
+      "bg-primary p-2 rounded-lg shadow-lg hover:shadow-xl  transition-all duration-700 hover:scale-105 text-black text-sm",
     // action: {
     //   label: "Undo",
     //   onClick: () => console.log("Undo"),
@@ -23,7 +24,8 @@ export const showErrorToaster = ({
     description: description,
     position: "bottom-right",
     richColors: true,
-    class: "bg-red-500 p-2 rounded shadow text-white text-sm",
+    class:
+      "bg-red-500 p-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-700 hover:scale-105 text-white text-sm",
     // action: {
     //   label: "Undo",
     //   onClick: () => console.log("Undo"),
