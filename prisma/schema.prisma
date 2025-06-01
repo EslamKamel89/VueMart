@@ -12,16 +12,19 @@ datasource db {
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  email        String        @unique
+  id           Int             @id @default(autoincrement())
+  email        String          @unique
   name         String?
   avatarUrl    String?
   password     String?
   verifiedAt   DateTime?
   otpCode      String?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  role         String?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
   authAccounts AuthAccount[]
+  reviews      ProductReview[]
+  payments     Payment[]
 }
 
 model AuthAccount {
@@ -30,6 +33,90 @@ model AuthAccount {
   providerUserId String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  userId         Int
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Product Product[]
+}
+
+model Product {
+  id        Int      @id @default(autoincrement())
+  name      String
+  slug      String?
+  color     String
+  price     Decimal
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  categoryId     Int
+  category       Category             @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  productReviews ProductReview[]
+  starts         ProductStar[]
+  productStars   ProductStarPercent[]
+  payment        Payment[]
+  images         Image[]
+}
+
+model Payment {
+  id        Int      @id @default(autoincrement())
+  amount    Decimal
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  productId Int?
+  Product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+}
+
+model ProductStarPercent {
+  id        Int      @id @default(autoincrement())
+  times     Int
+  stars     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productId Int?
+  Product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model ProductStar {
+  id            Int      @id @default(autoincrement())
+  receivedStars Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  productId Int?
+  Product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model ProductReview {
+  id         Int      @id @default(autoincrement())
+  starNumber Int
+  comment    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId Int?
+  Product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productId Int?
+  Product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
