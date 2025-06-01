@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineProps<{
+  // categories: Category[];
+}>();
+</script>
 
 <template>
   <Table>
