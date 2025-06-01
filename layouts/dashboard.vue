@@ -11,7 +11,7 @@
       ]"
     >
       <div class="flex items-center justify-between p-4">
-        <div v-if="!isSidebarCollapsed" class="text-lg font-bold">MyShop</div>
+        <div v-if="!isSidebarCollapsed" class="text-lg font-bold">VueMart</div>
         <Button variant="ghost" size="icon" @click="toggleSidebar">
           <Icon v-if="isSidebarCollapsed" name="i-lucide-menu"></Icon>
           <Icon v-else name="i-lucide-x"></Icon>
@@ -22,13 +22,33 @@
         <Card
           v-for="(item, index) in navItems"
           :key="index"
-          class="hover:bg-muted flex cursor-pointer items-center gap-2 p-3"
+          class="hover:bg-muted flex cursor-pointer items-center gap-2 p-3 transition-all duration-500"
+          :class="{
+            'scale-105 border-gray-200 !bg-gray-100 shadow-2xl':
+              route.path == item.path,
+          }"
           @click="navigate(item.path)"
         >
-          <div class="flex w-full justify-start space-x-4">
-            <Icon :name="`i-lucide-${item.icon}`" class="text-primary"></Icon>
-            <span v-if="!isSidebarCollapsed">{{ item.title }}</span>
-          </div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger as-child>
+                <div class="flex w-full items-center justify-start space-x-4">
+                  <Icon
+                    :name="`i-lucide-${item.icon}`"
+                    class="text-primary w-16 shrink-0"
+                  ></Icon>
+                  <span
+                    class="transition-all duration-1000"
+                    :class="{ '!hidden': isSidebarCollapsed }"
+                    >{{ item.title }}</span
+                  >
+                </div>
+              </TooltipTrigger>
+              <TooltipContent v-if="isSidebarCollapsed">
+                <p>{{ item.title }}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </Card>
       </nav>
     </aside>
@@ -61,29 +81,7 @@
 
       <!-- Page Content -->
       <main class="overflow-auto p-6">
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <Card class="p-6">
-            <h2 class="text-muted-foreground text-sm font-medium">
-              Total Users
-            </h2>
-            <p class="mt-2 text-2xl font-bold">1,234</p>
-            <p class="mt-1 text-xs text-green-500">+12% from last month</p>
-          </Card>
-
-          <Card class="p-6">
-            <h2 class="text-muted-foreground text-sm font-medium">
-              Total Orders
-            </h2>
-            <p class="mt-2 text-2xl font-bold">567</p>
-            <p class="mt-1 text-xs text-green-500">+8% from last month</p>
-          </Card>
-
-          <Card class="p-6">
-            <h2 class="text-muted-foreground text-sm font-medium">Earnings</h2>
-            <p class="mt-2 text-2xl font-bold">$9,876</p>
-            <p class="mt-1 text-xs text-red-500">-2% from last month</p>
-          </Card>
-        </div>
+        <slot />
       </main>
     </div>
   </div>
@@ -91,21 +89,25 @@
 
 <script setup lang="ts">
 const isSidebarCollapsed = ref(false);
+definePageMeta({
+  // middleware: 'auth'
+});
 const toggleSidebar = () => {
   isSidebarCollapsed.value = !isSidebarCollapsed.value;
 };
 const { width } = useWindowSize();
 const isMobile = computed(() => width.value < 768);
 const navItems = [
-  { title: "Dashboard", icon: "home", path: "/" },
-  { title: "Orders", icon: "shopping-cart", path: "/orders" },
-  { title: "Products", icon: "package", path: "/products" },
-  { title: "Settings", icon: "settings", path: "/settings" },
+  { title: "Dashboard", icon: "home", path: "/admin" },
+  { title: "Categories", icon: "shapes", path: "/admin/products" },
+  { title: "Products", icon: "shopping-basket", path: "/admin/categories" },
+  { title: "Payments", icon: "circle-dollar-sign", path: "/admin/payments" },
+  { title: "Users", icon: "users", path: "/admin/users" },
 ];
-
+const route = useRoute();
+const router = useRouter();
 function navigate(path: string) {
-  // Replace with real router.push if using Vue Router
-  alert("Navigating to " + path);
+  router.push(path);
 }
 
 function goToProfile() {
