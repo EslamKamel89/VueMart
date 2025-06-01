@@ -89,9 +89,7 @@
 
 <script setup lang="ts">
 const isSidebarCollapsed = ref(false);
-definePageMeta({
-  // middleware: 'auth'
-});
+
 const toggleSidebar = () => {
   isSidebarCollapsed.value = !isSidebarCollapsed.value;
 };
