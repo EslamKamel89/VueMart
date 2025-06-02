@@ -5,5 +5,5 @@ definePageMeta({
 });
 </script>
 <template>
-  <AdminCategoryTable />
+  <AdminCategoryTable :categories="fakeCategories" />
 </template>

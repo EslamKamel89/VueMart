@@ -57,7 +57,7 @@ function logout() {
           :key="index"
           class="hover:bg-muted flex cursor-pointer items-center gap-2 p-3 transition-all duration-500"
           :class="{
-            'scale-105 border-gray-200 !bg-gray-100 shadow-2xl':
+            'scale-110 border-gray-200 !bg-gray-200 shadow-2xl':
               route.path == item.path,
           }"
           @click="navigate(item.path)"

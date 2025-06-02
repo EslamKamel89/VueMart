@@ -15,3 +15,5 @@ export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().min(2).max(50),
 });
+
+export const categorySchema = z.object({ name: z.string().min(2).max(100) });
