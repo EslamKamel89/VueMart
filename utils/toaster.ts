@@ -9,7 +9,7 @@ export const showSuccessToaster = ({
     position: "bottom-right",
     richColors: true,
     class:
-      "bg-primary p-2 rounded-lg shadow-lg hover:shadow-xl  transition-all duration-700 hover:scale-105 text-black text-sm",
+      "bg-primary p-2 rounded-lg shadow-lg hover:shadow-xl  transition-all duration-700 hover:scale-105 text-white text-sm",
     // action: {
     //   label: "Undo",
     //   onClick: () => console.log("Undo"),

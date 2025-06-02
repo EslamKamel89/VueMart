@@ -6,9 +6,24 @@ const formSchema = toTypedSchema(categorySchema);
 const form = useForm({
   validationSchema: formSchema,
 });
-const submit = form.handleSubmit((values) => {
-  pr(values, "create category form");
-  emit("submit");
+const isLoading = ref(false);
+const submit = form.handleSubmit(async (values) => {
+  isLoading.value = true;
+  try {
+    const category = await $fetch("/api/admin/categories", {
+      method: "POST",
+      body: values,
+    });
+    showSuccessToaster({
+      title: "Success",
+      description: "Category created succesfully",
+    });
+    emit("submit");
+  } catch (error) {
+    handleApiError(error);
+  } finally {
+    isLoading.value = false;
+  }
 });
 const emit = defineEmits<{
   submit: [];
@@ -29,6 +44,6 @@ const emit = defineEmits<{
         <FormMessage />
       </FormItem>
     </FormField>
-    <Button type="submit" class="mt-4">Create</Button>
+    <Button type="submit" :disabled="isLoading" class="mt-4">Create</Button>
   </form>
 </template>
