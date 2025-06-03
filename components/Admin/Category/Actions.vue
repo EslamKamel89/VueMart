@@ -8,13 +8,19 @@ const props = defineProps<{
 const emit = defineEmits<{
   submit: [];
 }>();
-const handleDelete = () => {};
+const handleDelete = () => {
+  pr("handle delete confirmed");
+};
 </script>
 <template>
   <div class="flex justify-end space-x-1">
-    <Button variant="destructive" size="sm">
-      <Trash2 @click="handleDelete" />
-    </Button>
+    <SharedAreYouSure @continue="handleDelete">
+      <template #trigger>
+        <Button variant="destructive" size="sm">
+          <Trash2 />
+        </Button>
+      </template>
+    </SharedAreYouSure>
     <Dialog>
       <DialogTrigger>
         <Button variant="outline" size="sm">
