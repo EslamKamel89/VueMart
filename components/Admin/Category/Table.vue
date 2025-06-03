@@ -114,9 +114,12 @@ const refetchData = () => {
           <div class="flex flex-col space-y-1">
             <p class="text-muted-foreground text-sm">ID: {{ category.id }}</p>
             <h3 class="text-lg font-semibold">{{ category.name }}</h3>
-            <p class="text-right text-sm text-gray-500 dark:text-gray-400">
-              {{ tableDateFormatter(category.createdAt) }}
-            </p>
+            <div class="mt-4 flex w-full flex-col items-end space-y-1">
+              <p class="text-right text-sm text-gray-500 dark:text-gray-400">
+                {{ tableDateFormatter(category.createdAt) }}
+              </p>
+              <AdminCategoryActions :category="category" />
+            </div>
           </div>
         </Card>
       </template>
