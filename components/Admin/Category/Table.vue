@@ -3,7 +3,8 @@ import type { Category } from "~/types/db";
 
 const categories = ref<Category[]>([]);
 const search = ref<string>();
-const open = ref(false);
+const createModel = ref(false);
+const editModel = ref(false);
 const isLoading = ref(false);
 const fetch = async () => {
   isLoading.value = true;
@@ -27,56 +28,98 @@ const filteredCategories = computed(() => {
 onMounted(() => {
   fetch();
 });
-const handleCategoryCreated = () => {
-  open.value = false;
+const refetchData = () => {
+  createModel.value = false;
+  editModel.value = false;
   fetch();
 };
 </script>
 
 <template>
   <div class="w-full">
+    <!-- Search & Create Dialog -->
     <div class="my-2 flex w-full justify-center space-x-2">
       <Input placeholder="Search..." v-model="search" />
-      <Dialog v-model:open="open">
+      <Dialog v-model:open="createModel">
         <DialogTrigger>
           <Button>+ Category</Button>
         </DialogTrigger>
         <DialogContent>
-          <AdminCategoryCreate @submit="handleCategoryCreated" />
+          <AdminCategoryForm @submit="refetchData" type="create" />
         </DialogContent>
       </Dialog>
     </div>
-    <Table :categories="categories">
-      <TableCaption>A list of all categories.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead class="w-[100px]"> Id </TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead class="text-right"> Created at </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <template v-if="isLoading">
-          <TableRow v-for="index in 10" :key="index">
-            <TableCell class="font-medium">
-              <Skeleton class="h-4 w-full" />
-            </TableCell>
-            <TableCell> <Skeleton class="h-4 w-full" /></TableCell>
-            <TableCell class="text-right">
-              <Skeleton class="h-4 w-full" />
-            </TableCell>
+
+    <!-- Desktop Table (Visible on lg+) -->
+    <div class="hidden overflow-x-auto md:block">
+      <Table :categories="categories">
+        <TableCaption>A list of all categories.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead class="w-[100px]">Id</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Created at</TableHead>
+            <TableHead class="text-right">Actions</TableHead>
           </TableRow>
-        </template>
-        <template v-else>
-          <TableRow v-for="category in filteredCategories" :key="category.id">
-            <TableCell class="font-medium"> {{ category.id }} </TableCell>
-            <TableCell>{{ category.name }}</TableCell>
-            <TableCell class="text-right">
+        </TableHeader>
+        <TableBody>
+          <template v-if="isLoading">
+            <TableRow v-for="index in 10" :key="index">
+              <TableCell class="font-medium">
+                <Skeleton class="h-4 w-full" />
+              </TableCell>
+              <TableCell><Skeleton class="h-4 w-full" /></TableCell>
+              <TableCell><Skeleton class="h-4 w-full" /></TableCell>
+              <TableCell class="text-right">
+                <Skeleton class="h-4 w-full" />
+              </TableCell>
+            </TableRow>
+          </template>
+          <template v-else>
+            <TableRow v-for="category in filteredCategories" :key="category.id">
+              <TableCell class="font-medium">{{ category.id }}</TableCell>
+              <TableCell>{{ category.name }}</TableCell>
+              <TableCell>
+                {{ tableDateFormatter(category.createdAt) }}</TableCell
+              >
+              <TableCell class="text-right">
+                <AdminCategoryActions
+                  :category="category"
+                  @submit="refetchData"
+                />
+              </TableCell>
+            </TableRow>
+          </template>
+        </TableBody>
+      </Table>
+    </div>
+
+    <!-- Mobile Card View (Visible on sm/md) -->
+    <div class="space-y-3 md:hidden">
+      <template v-if="isLoading">
+        <Card v-for="index in 10" :key="index" class="animate-pulse p-4">
+          <div class="space-y-2">
+            <Skeleton class="h-4 w-1/4" />
+            <Skeleton class="h-4 w-3/4" />
+            <Skeleton class="h-4 w-1/2" />
+          </div>
+        </Card>
+      </template>
+      <template v-else>
+        <Card
+          v-for="category in filteredCategories"
+          :key="category.id"
+          class="hover:bg-muted p-4 transition-colors"
+        >
+          <div class="flex flex-col space-y-1">
+            <p class="text-muted-foreground text-sm">ID: {{ category.id }}</p>
+            <h3 class="text-lg font-semibold">{{ category.name }}</h3>
+            <p class="text-right text-sm text-gray-500 dark:text-gray-400">
               {{ tableDateFormatter(category.createdAt) }}
-            </TableCell>
-          </TableRow>
-        </template>
-      </TableBody>
-    </Table>
+            </p>
+          </div>
+        </Card>
+      </template>
+    </div>
   </div>
 </template>
