@@ -4,6 +4,4 @@ definePageMeta({
   middleware: "auth",
 });
 </script>
-<template>
-  <div>Products page</div>
-</template>
+<template></template>
