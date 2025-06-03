@@ -118,7 +118,10 @@ const refetchData = () => {
               <p class="text-right text-sm text-gray-500 dark:text-gray-400">
                 {{ tableDateFormatter(category.createdAt) }}
               </p>
-              <AdminCategoryActions :category="category" />
+              <AdminCategoryActions
+                :category="category"
+                @submit="refetchData"
+              />
             </div>
           </div>
         </Card>
