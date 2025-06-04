@@ -4,4 +4,6 @@ definePageMeta({
   middleware: "auth",
 });
 </script>
-<template></template>
+<template>
+  <AdminProductTable />
+</template>
