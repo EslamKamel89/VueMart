@@ -58,6 +58,9 @@ const refetchData = () => {
           <TableRow>
             <TableHead class="w-[100px]">Id</TableHead>
             <TableHead>Name</TableHead>
+            <TableHead>Color</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Category</TableHead>
             <TableHead>Created at</TableHead>
             <TableHead class="text-right">Actions</TableHead>
           </TableRow>
@@ -70,6 +73,9 @@ const refetchData = () => {
               </TableCell>
               <TableCell><Skeleton class="h-4 w-full" /></TableCell>
               <TableCell><Skeleton class="h-4 w-full" /></TableCell>
+              <TableCell><Skeleton class="h-4 w-full" /></TableCell>
+              <TableCell><Skeleton class="h-4 w-full" /></TableCell>
+              <TableCell><Skeleton class="h-4 w-full" /></TableCell>
               <TableCell class="text-right">
                 <Skeleton class="h-4 w-full" />
               </TableCell>
@@ -78,7 +84,14 @@ const refetchData = () => {
           <template v-else>
             <TableRow v-for="product in filteredProducts" :key="product.id">
               <TableCell class="font-medium">{{ product.id }}</TableCell>
-              <TableCell>{{ product.name }}</TableCell>
+              <TableCell>
+                {{ product.name }}
+              </TableCell>
+              <TableCell>
+                <SharedColor :color="product.color" />
+              </TableCell>
+              <TableCell>{{ product.price }}</TableCell>
+              <TableCell>{{ product.category?.name }}</TableCell>
               <TableCell>
                 {{ tableDateFormatter(product.createdAt) }}</TableCell
               >
@@ -98,6 +111,9 @@ const refetchData = () => {
           <div class="space-y-2">
             <Skeleton class="h-4 w-1/4" />
             <Skeleton class="h-4 w-3/4" />
+            <Skeleton class="h-4 w-3/4" />
+            <Skeleton class="h-4 w-3/4" />
+            <Skeleton class="h-4 w-3/4" />
             <Skeleton class="h-4 w-1/2" />
           </div>
         </Card>
@@ -108,9 +124,21 @@ const refetchData = () => {
           :key="product.id"
           class="hover:bg-muted p-4 transition-colors"
         >
-          <div class="flex flex-col space-y-1">
+          <div class="flex flex-col space-y-2">
             <p class="text-muted-foreground text-sm">ID: {{ product.id }}</p>
-            <h3 class="text-lg font-semibold">{{ product.name }}</h3>
+            <h3 class="text-lg font-bold">{{ product.name }}</h3>
+            <Separator />
+            <SharedCustomToolTip description="Product Color" class="">
+              <div>
+                <SharedColor :color="product.color" />
+              </div>
+            </SharedCustomToolTip>
+            <SharedCustomToolTip description="Product Price">
+              <div class="">${{ product.price }}</div>
+            </SharedCustomToolTip>
+            <SharedCustomToolTip description="Category Name">
+              <div class="">{{ product.category?.name }}</div>
+            </SharedCustomToolTip>
             <div class="mt-4 flex w-full flex-col items-end space-y-1">
               <p class="text-right text-sm text-gray-500 dark:text-gray-400">
                 {{ tableDateFormatter(product.createdAt) }}

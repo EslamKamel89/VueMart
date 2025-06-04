@@ -6,6 +6,7 @@ export default defineEventHandler(async (event) => {
     select: {
       id: true,
       name: true,
+      price: true,
       color: true,
       createdAt: true,
       updatedAt: true,
