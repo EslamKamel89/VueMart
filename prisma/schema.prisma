@@ -44,7 +44,7 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Product Product[]
+  products Product[]
 }
 
 model Product {
@@ -61,7 +61,7 @@ model Product {
   productReviews ProductReview[]
   starts         ProductStar[]
   productStars   ProductStarPercent[]
-  payment        Payment[]
+  payments       Payment[]
   images         Image[]
 }
 

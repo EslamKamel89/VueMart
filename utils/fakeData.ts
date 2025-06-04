@@ -1,64 +1,226 @@
-import type { Category } from "~/types/db";
+import type { Category, Product } from "~/types/db";
 
-export const fakeCategories: Partial<Category>[] = [
+export const fakeCategories: Partial<
+  Omit<Category, "products"> & { products: Partial<Product>[] }
+>[] = [
   {
     name: "Electronics",
-    // id: 1,
-    // createdAt: new Date("2023-01-15T08:45:30Z"),
-    // updatedAt: new Date("2024-03-10T14:22:15Z"),
+    products: [
+      { name: "Smartphone X1", color: "#542784", price: 799.99, categoryId: 1 },
+      {
+        name: "Wireless Noise-Canceling Headphones",
+        color: "#3E6B9C",
+        price: 199.99,
+        categoryId: 1,
+      },
+      {
+        name: "4K Ultra HD Smart TV",
+        color: "#A0A0A0",
+        price: 699.0,
+        categoryId: 1,
+      },
+    ],
   },
   {
     name: "Books",
-    // id: 2,
-    // createdAt: new Date("2023-02-01T10:00:00Z"),
-    // updatedAt: new Date("2024-02-28T09:15:47Z"),
+    products: [
+      { name: "The Art of War", color: "#2D2D2D", price: 14.99, categoryId: 2 },
+      {
+        name: "To Kill a Mockingbird",
+        color: "#4A3F35",
+        price: 9.99,
+        categoryId: 2,
+      },
+      {
+        name: "Digital Fortress",
+        color: "#1E5AAC",
+        price: 12.99,
+        categoryId: 2,
+      },
+    ],
   },
   {
     name: "Clothing",
-    // id: 3,
-    // createdAt: new Date("2023-03-05T12:30:00Z"),
-    // updatedAt: new Date("2024-03-01T16:40:33Z"),
+    products: [
+      {
+        name: "Men’s Casual T-Shirt",
+        color: "#FFFFFF",
+        price: 24.99,
+        categoryId: 3,
+      },
+      {
+        name: "Women’s Denim Jeans",
+        color: "#1A3B6F",
+        price: 49.99,
+        categoryId: 3,
+      },
+      {
+        name: "Winter Wool Coat",
+        color: "#3A3A3A",
+        price: 129.99,
+        categoryId: 3,
+      },
+    ],
   },
   {
     name: "Home & Kitchen",
-    // id: 4,
-    // createdAt: new Date("2023-04-12T07:20:10Z"),
-    // updatedAt: new Date("2024-01-22T11:05:20Z"),
+    products: [
+      {
+        name: "Non-Stick Cookware Set",
+        color: "#C4A484",
+        price: 89.99,
+        categoryId: 4,
+      },
+      {
+        name: "Modern LED Table Lamp",
+        color: "#F5F5DC",
+        price: 34.99,
+        categoryId: 4,
+      },
+      {
+        name: "Stainless Steel Chef Knife",
+        color: "#C0C0C0",
+        price: 49.99,
+        categoryId: 4,
+      },
+    ],
   },
   {
     name: "Sports & Outdoors",
-    // id: 5,
-    // createdAt: new Date("2023-05-18T09:10:45Z"),
-    // updatedAt: new Date("2024-03-05T13:30:00Z"),
+    products: [
+      {
+        name: "Adjustable Dumbbell Set",
+        color: "#0047AB",
+        price: 129.99,
+        categoryId: 5,
+      },
+      {
+        name: "Hiking Backpack 40L",
+        color: "#2B4E2B",
+        price: 79.99,
+        categoryId: 5,
+      },
+      {
+        name: "Yoga Mat (Non-Slip)",
+        color: "#C19A6B",
+        price: 29.99,
+        categoryId: 5,
+      },
+    ],
   },
   {
     name: "Beauty & Personal Care",
-    // id: 6,
-    // createdAt: new Date("2023-06-20T14:50:00Z"),
-    // updatedAt: new Date("2024-02-18T08:45:12Z"),
+    products: [
+      {
+        name: "Hydrating Facial Serum",
+        color: "#F8C8DC",
+        price: 29.99,
+        categoryId: 6,
+      },
+      {
+        name: "Natural Lip Balm SPF 15",
+        color: "#E3256B",
+        price: 9.99,
+        categoryId: 6,
+      },
+      {
+        name: "Organic Shampoo & Conditioner Set",
+        color: "#8CC084",
+        price: 19.99,
+        categoryId: 6,
+      },
+    ],
   },
   {
     name: "Toys & Games",
-    // id: 7,
-    // createdAt: new Date("2023-07-22T16:05:30Z"),
-    // updatedAt: new Date("2024-02-10T17:20:00Z"),
+    products: [
+      {
+        name: "Wooden Building Blocks Set",
+        color: "#D2691E",
+        price: 24.99,
+        categoryId: 7,
+      },
+      {
+        name: "Board Game - Strategy Master",
+        color: "#008080",
+        price: 39.99,
+        categoryId: 7,
+      },
+      {
+        name: "Remote Control Car",
+        color: "#FF0000",
+        price: 49.99,
+        categoryId: 7,
+      },
+    ],
   },
   {
     name: "Health & Wellness",
-    // id: 8,
-    // createdAt: new Date("2023-08-30T11:15:00Z"),
-    // updatedAt: new Date("2024-03-08T10:00:45Z"),
+    products: [
+      {
+        name: "Vitamin C Supplement",
+        color: "#F2F2F2",
+        price: 14.99,
+        categoryId: 8,
+      },
+      {
+        name: "Electric Toothbrush",
+        color: "#000000",
+        price: 39.99,
+        categoryId: 8,
+      },
+      {
+        name: "Fitness Tracker Watch",
+        color: "#4A4A4A",
+        price: 59.99,
+        categoryId: 8,
+      },
+    ],
   },
   {
     name: "Automotive",
-    // id: 9,
-    // createdAt: new Date("2023-09-14T09:30:15Z"),
-    // updatedAt: new Date("2024-02-25T19:10:30Z"),
+    products: [
+      {
+        name: "Car Vacuum Cleaner",
+        color: "#808080",
+        price: 29.99,
+        categoryId: 9,
+      },
+      {
+        name: "Leather Car Seat Covers",
+        color: "#000000",
+        price: 199.99,
+        categoryId: 9,
+      },
+      {
+        name: "Bluetooth Car FM Transmitter",
+        color: "#4D4D4D",
+        price: 19.99,
+        categoryId: 9,
+      },
+    ],
   },
   {
     name: "Grocery",
-    // id: 10,
-    // createdAt: new Date("2023-10-01T06:45:00Z"),
-    // updatedAt: new Date("2024-03-02T07:12:44Z"),
+    products: [
+      {
+        name: "Organic Whole Milk",
+        color: "#FFFFF0",
+        price: 4.99,
+        categoryId: 10,
+      },
+      {
+        name: "Whole Wheat Bread Loaf",
+        color: "#D2B48C",
+        price: 2.99,
+        categoryId: 10,
+      },
+      {
+        name: "Mixed Nuts Pack",
+        color: "#A0522D",
+        price: 8.99,
+        categoryId: 10,
+      },
+    ],
   },
 ];

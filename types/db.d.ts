@@ -19,30 +19,30 @@ export type AuthAccount = AuthAccountType & {
   user?: User;
 };
 export type Category = CategoryType & {
-  Product?: Product[];
+  products?: Product[];
 };
-export type Product = ProductType & {
+export type Product = Omit<ProductType, "price"> & { price: number } & {
   category?: Category;
   productReviews?: ProductReview[];
   starts?: ProductStar[];
   productStars?: ProductStarPercent[];
-  payment?: Payment[];
+  payments?: Payment[];
   images?: Image[];
 };
 export type Payment = PaymentType & {
   user?: User;
-  Product?: Product;
+  product?: Product;
 };
 export type ProductStarPercent = ProductStarPercentType & {
-  Product?: Product;
+  product?: Product;
 };
 export type ProductStar = ProductStarType & {
-  Product?: Product;
+  product?: Product;
 };
 export type ProductReview = ProductReviewType & {
   user?: User;
-  Product?: Product;
+  product?: Product;
 };
 export type Image = ImageType & {
-  Product?: Product;
+  product?: Product;
 };

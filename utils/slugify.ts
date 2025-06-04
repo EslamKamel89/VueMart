@@ -1,4 +1,7 @@
-function slugify(input: string, separator: string = "-"): string {
+export default function slugify(
+  input: string,
+  separator: string = "-",
+): string {
   return input
     .toString()
     .toLowerCase()

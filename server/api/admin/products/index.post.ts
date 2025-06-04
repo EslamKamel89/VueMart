@@ -1,10 +1,10 @@
 import prisma from "~/utils/db";
+import slugify from "~/utils/slugify";
 import { productSchema } from "~/utils/validation";
-
 export default defineEventHandler(async (event) => {
   //   const session = await requireUserSession(event);
   const body = await readValidatedBody(event, (values) =>
-    productSchema.parse(values),
+    productSchema.parseAsync(values),
   );
 
   let product = await prisma.product.create({
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
   product = await prisma.product.update({
     where: { id: product.id },
     data: {
-      slug: `${product.id}-${slugify(`${product.id}-${product.name}`)}`,
+      slug: `${slugify(`${product.id}-${product.name}`)}`,
     },
   });
   return product;
