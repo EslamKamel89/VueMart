@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Eye, Pen } from "lucide-vue-next";
-import type { Product } from "~/types/db";
+import type { Category, Product } from "~/types/db";
 
 const props = defineProps<{
   product: Product;
+  categories: Category[];
 }>();
 const emit = defineEmits<{
   submit: [];
@@ -23,6 +24,7 @@ const emit = defineEmits<{
           @submit="emit('submit')"
           type="edit"
           :product="product"
+          :categories="categories"
         />
       </DialogContent>
     </Dialog>
@@ -33,7 +35,11 @@ const emit = defineEmits<{
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <AdminProductForm type="view" :product="product" />
+        <AdminProductForm
+          type="view"
+          :product="product"
+          :categories="categories"
+        />
       </DialogContent>
     </Dialog>
   </div>

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";
+import { PaintRoller } from "lucide-vue-next";
 import { useForm } from "vee-validate";
-import type { Product } from "~/types/db";
+import type { Category, Product } from "~/types/db";
 const props = defineProps<{
   type: "create" | "edit" | "view";
   product?: Product;
+  categories: Category[];
 }>();
 const formSchema = toTypedSchema(productSchema);
 const form = useForm({
@@ -48,6 +50,9 @@ onMounted(() => {
   if (props.type == "edit" || props.type == "view") {
     form.setValues({
       name: props.product?.name,
+      categoryId: props.product?.category?.id,
+      color: props.product?.color,
+      price: props.product?.price,
     });
   }
 });
@@ -65,6 +70,46 @@ onMounted(() => {
             placeholder="Product name"
             :disabled="type == 'view'"
             v-bind="componentField"
+          />
+        </FormControl>
+        <FormDescription />
+        <FormMessage />
+      </FormItem>
+    </FormField>
+    <FormField v-slot="{ componentField }" name="color">
+      <FormItem class="!gap-1">
+        <FormLabel class="my-1">Color</FormLabel>
+        <FormControl>
+          <div class="flex space-x-2">
+            <label for="pick-color">
+              <div class="border-primary bg-primary/10 rounded px-3 py-2">
+                <PaintRoller />
+              </div>
+            </label>
+            <Input
+              id="pick-color"
+              type="color"
+              placeholder="Color"
+              :disabled="type == 'view'"
+              v-bind="componentField"
+              class="sr-only"
+            />
+            <SharedColor v-if="form.values.color" :color="form.values.color" />
+          </div>
+        </FormControl>
+        <FormDescription />
+        <FormMessage />
+      </FormItem>
+    </FormField>
+    <FormField v-slot="{ componentField }" name="price">
+      <FormItem class="!gap-1">
+        <FormLabel class="my-1">Price</FormLabel>
+        <FormControl>
+          <Input
+            placeholder="Price"
+            :disabled="type == 'view'"
+            v-bind="componentField"
+            type="number"
           />
         </FormControl>
         <FormDescription />

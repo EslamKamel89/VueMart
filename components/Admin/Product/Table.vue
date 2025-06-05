@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Search, SearchX } from "lucide-vue-next";
 import type { PaginationMeta } from "~/types/custom";
-import type { Product } from "~/types/db";
+import type { Category, Product } from "~/types/db";
 const products = ref<Product[]>([]);
 const search = ref<string>();
 const createModel = ref(false);
@@ -9,6 +9,17 @@ const editModel = ref(false);
 const isLoading = ref(false);
 const paginationMeta = ref<PaginationMeta>();
 const page = ref(1);
+const categories = ref<Category[]>();
+const fetchCategories = async () => {
+  isLoading.value = true;
+  try {
+    categories.value = await $fetch<Category[]>("/api/admin/categories");
+  } catch (error) {
+    handleApiError(error);
+  } finally {
+    isLoading.value = false;
+  }
+};
 const fetch = async () => {
   isLoading.value = true;
   try {
@@ -27,18 +38,9 @@ const fetch = async () => {
     isLoading.value = false;
   }
 };
-// const filteredProducts = computed(() => {
-//   if (!search.value) return products.value;
-//   const cleanSearch = search.value?.trim().toLowerCase()!;
-//   return products.value.filter(
-//     (product) =>
-//       product.name.trim().toLowerCase().includes(cleanSearch) ||
-//       product.category?.name.trim().toLowerCase().includes(cleanSearch) ||
-//       product.color?.trim().toLowerCase().includes(cleanSearch),
-//   );
-// });
 onMounted(() => {
   fetch();
+  fetchCategories();
 });
 const refetchData = () => {
   createModel.value = false;
@@ -65,9 +67,10 @@ const handleClearSearch = () => {
     <!-- Search & Create Dialog -->
     <div class="my-2 flex w-full justify-center space-x-2">
       <div class="flex w-full grow-1 !rounded-e-none">
-        <Input
-          placeholder="Search by name or color or category"
+        <input
+          placeholder="Search.."
           v-model="search"
+          class="w-full rounded-s-lg rounded-e-none border border-e-0 border-gray-700 ps-4 placeholder:text-xs"
         />
         <Button v-if="search" class="!rounded-none" @click="handleClearSearch">
           <SearchX />
@@ -82,7 +85,11 @@ const handleClearSearch = () => {
           <Button>+ Product</Button>
         </DialogTrigger>
         <DialogContent>
-          <AdminProductForm @submit="refetchData" type="create" />
+          <AdminProductForm
+            @submit="refetchData"
+            type="create"
+            :categories="categories ?? []"
+          />
         </DialogContent>
       </Dialog>
     </div>
@@ -133,7 +140,11 @@ const handleClearSearch = () => {
                 {{ tableDateFormatter(product.createdAt) }}</TableCell
               >
               <TableCell class="text-right">
-                <AdminProductActions :product="product" @submit="refetchData" />
+                <AdminProductActions
+                  :product="product"
+                  @submit="refetchData"
+                  :categories="categories ?? []"
+                />
               </TableCell>
             </TableRow>
           </template>
@@ -180,7 +191,11 @@ const handleClearSearch = () => {
               <p class="text-right text-sm text-gray-500 dark:text-gray-400">
                 {{ tableDateFormatter(product.createdAt) }}
               </p>
-              <AdminProductActions :product="product" @submit="refetchData" />
+              <AdminProductActions
+                :product="product"
+                @submit="refetchData"
+                :categories="categories ?? []"
+              />
             </div>
           </div>
         </Card>
