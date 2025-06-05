@@ -18,11 +18,12 @@ const fetch = async () => {
 };
 const filteredProducts = computed(() => {
   if (!search.value) return products.value;
-  return products.value.filter((product) =>
-    product.name
-      .trim()
-      .toLowerCase()
-      .includes(search.value?.trim().toLowerCase()!),
+  const cleanSearch = search.value?.trim().toLowerCase()!;
+  return products.value.filter(
+    (product) =>
+      product.name.trim().toLowerCase().includes(cleanSearch) ||
+      product.category?.name.trim().toLowerCase().includes(cleanSearch) ||
+      product.color?.trim().toLowerCase().includes(cleanSearch),
   );
 });
 onMounted(() => {
@@ -39,7 +40,10 @@ const refetchData = () => {
   <div class="w-full">
     <!-- Search & Create Dialog -->
     <div class="my-2 flex w-full justify-center space-x-2">
-      <Input placeholder="Search..." v-model="search" />
+      <Input
+        placeholder="Search by name or color or category"
+        v-model="search"
+      />
       <Dialog v-model:open="createModel">
         <DialogTrigger>
           <Button>+ Product</Button>
