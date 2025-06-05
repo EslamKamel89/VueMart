@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Search, SearchX } from "lucide-vue-next";
 import type { PaginationMeta } from "~/types/custom";
 import type { Product } from "~/types/db";
 const products = ref<Product[]>([]);
@@ -17,6 +18,7 @@ const fetch = async () => {
       params: {
         page: page.value,
         limit: 10,
+        search: search.value ?? "",
       },
     });
   } catch (error) {
@@ -25,16 +27,16 @@ const fetch = async () => {
     isLoading.value = false;
   }
 };
-const filteredProducts = computed(() => {
-  if (!search.value) return products.value;
-  const cleanSearch = search.value?.trim().toLowerCase()!;
-  return products.value.filter(
-    (product) =>
-      product.name.trim().toLowerCase().includes(cleanSearch) ||
-      product.category?.name.trim().toLowerCase().includes(cleanSearch) ||
-      product.color?.trim().toLowerCase().includes(cleanSearch),
-  );
-});
+// const filteredProducts = computed(() => {
+//   if (!search.value) return products.value;
+//   const cleanSearch = search.value?.trim().toLowerCase()!;
+//   return products.value.filter(
+//     (product) =>
+//       product.name.trim().toLowerCase().includes(cleanSearch) ||
+//       product.category?.name.trim().toLowerCase().includes(cleanSearch) ||
+//       product.color?.trim().toLowerCase().includes(cleanSearch),
+//   );
+// });
 onMounted(() => {
   fetch();
 });
@@ -47,16 +49,34 @@ const handlePageChange = (pageNum: number) => {
   page.value = pageNum;
   refetchData();
 };
+const handleSearch = () => {
+  page.value = 1;
+  refetchData();
+};
+const handleClearSearch = () => {
+  page.value = 1;
+  search.value = "";
+  refetchData();
+};
 </script>
 
 <template>
   <div class="w-full">
     <!-- Search & Create Dialog -->
     <div class="my-2 flex w-full justify-center space-x-2">
-      <Input
-        placeholder="Search by name or color or category"
-        v-model="search"
-      />
+      <div class="flex w-full grow-1 !rounded-e-none">
+        <Input
+          placeholder="Search by name or color or category"
+          v-model="search"
+        />
+        <Button v-if="search" class="!rounded-none" @click="handleClearSearch">
+          <SearchX />
+        </Button>
+
+        <Button class="!rounded-s-none" @click="handleSearch">
+          <Search />
+        </Button>
+      </div>
       <Dialog v-model:open="createModel">
         <DialogTrigger>
           <Button>+ Product</Button>
@@ -99,7 +119,7 @@ const handlePageChange = (pageNum: number) => {
             </TableRow>
           </template>
           <template v-else>
-            <TableRow v-for="product in filteredProducts" :key="product.id">
+            <TableRow v-for="product in products" :key="product.id">
               <TableCell class="font-medium">{{ product.id }}</TableCell>
               <TableCell>
                 {{ product.name }}
@@ -137,7 +157,7 @@ const handlePageChange = (pageNum: number) => {
       </template>
       <template v-else>
         <Card
-          v-for="product in filteredProducts"
+          v-for="product in products"
           :key="product.id"
           class="hover:bg-muted p-4 transition-colors"
         >

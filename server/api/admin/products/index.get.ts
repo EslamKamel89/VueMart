@@ -5,6 +5,7 @@ export default defineEventHandler(async (event) => {
   const params = await getQuery(event);
   const limit = parseInt(params.limit as string) || 10;
   const page = parseInt(params.page as string) || 1;
+  const search = (params.search || "") as string;
   const products = await prisma.product
     .paginate({
       select: {
@@ -15,6 +16,13 @@ export default defineEventHandler(async (event) => {
         createdAt: true,
         updatedAt: true,
         category: { select: { id: true, name: true } },
+      },
+      where: {
+        OR: [
+          { name: { contains: search } },
+          { color: { contains: search } },
+          { category: { name: { contains: search } } },
+        ],
       },
     })
     .withPages({
