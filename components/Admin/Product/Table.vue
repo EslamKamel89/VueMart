@@ -1,15 +1,24 @@
 <script setup lang="ts">
+import type { PaginationMeta } from "~/types/custom";
 import type { Product } from "~/types/db";
-
 const products = ref<Product[]>([]);
 const search = ref<string>();
 const createModel = ref(false);
 const editModel = ref(false);
 const isLoading = ref(false);
+const paginationMeta = ref<PaginationMeta>();
+const page = ref(1);
 const fetch = async () => {
   isLoading.value = true;
   try {
-    products.value = await $fetch<Product[]>("/api/admin/products");
+    [products.value, paginationMeta.value] = await $fetch<
+      [Product[], PaginationMeta]
+    >("/api/admin/products", {
+      params: {
+        page: page.value,
+        limit: 10,
+      },
+    });
   } catch (error) {
     handleApiError(error);
   } finally {
@@ -33,6 +42,10 @@ const refetchData = () => {
   createModel.value = false;
   editModel.value = false;
   fetch();
+};
+const handlePageChange = (pageNum: number) => {
+  page.value = pageNum;
+  refetchData();
 };
 </script>
 
@@ -153,5 +166,10 @@ const refetchData = () => {
         </Card>
       </template>
     </div>
+    <SharedPagination
+      v-if="paginationMeta"
+      :pagination-meta="paginationMeta"
+      @page-change="handlePageChange"
+    />
   </div>
 </template>
