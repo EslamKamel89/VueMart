@@ -111,6 +111,7 @@ const handleClearSearch = () => {
           <TableRow>
             <TableHead class="w-[100px]">Id</TableHead>
             <TableHead>Name</TableHead>
+            <TableHead>Images</TableHead>
             <TableHead>Color</TableHead>
             <TableHead>Price</TableHead>
             <TableHead>Category</TableHead>
@@ -129,6 +130,7 @@ const handleClearSearch = () => {
               <TableCell><Skeleton class="h-4 w-full" /></TableCell>
               <TableCell><Skeleton class="h-4 w-full" /></TableCell>
               <TableCell><Skeleton class="h-4 w-full" /></TableCell>
+              <TableCell><Skeleton class="h-4 w-full" /></TableCell>
               <TableCell class="text-right">
                 <Skeleton class="h-4 w-full" />
               </TableCell>
@@ -140,6 +142,9 @@ const handleClearSearch = () => {
                 <TableCell class="font-medium">{{ index + 1 }}</TableCell>
                 <TableCell>
                   {{ product.name }}
+                </TableCell>
+                <TableCell>
+                  <AdminProductImages :images="product.images ?? []" />
                 </TableCell>
                 <TableCell>
                   <SharedColor :color="product.color" />
@@ -184,6 +189,7 @@ const handleClearSearch = () => {
             <Skeleton class="h-4 w-3/4" />
             <Skeleton class="h-4 w-3/4" />
             <Skeleton class="h-4 w-3/4" />
+            <Skeleton class="h-4 w-3/4" />
             <Skeleton class="h-4 w-1/2" />
           </div>
         </Card>
@@ -203,6 +209,7 @@ const handleClearSearch = () => {
               </p>
               <h3 class="text-lg font-bold">{{ product.name }}</h3>
               <Separator />
+              <AdminProductImages :images="product.images ?? []" />
               <SharedCustomToolTip description="Product Color" class="">
                 <div>
                   <SharedColor :color="product.color" />

@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
         createdAt: true,
         updatedAt: true,
         category: { select: { id: true, name: true } },
+        images: { select: { id: true, url: true } },
       },
       where: {
         OR: [
