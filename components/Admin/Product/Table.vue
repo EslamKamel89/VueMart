@@ -90,7 +90,9 @@ const handleClearSearch = () => {
           <DialogTrigger>
             <Button type="button">+ Product</Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent
+            class="max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] overflow-y-auto p-0"
+          >
             <AdminProductForm
               @submit="refetchData"
               type="create"
