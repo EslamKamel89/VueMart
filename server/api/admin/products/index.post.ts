@@ -8,7 +8,10 @@ export default defineEventHandler(async (event) => {
   );
 
   let product = await prisma.product.create({
-    data: { ...body, images: undefined },
+    data: {
+      ...body,
+      images: { connect: body.images?.map((id) => ({ id })) ?? [] },
+    },
   });
   product = await prisma.product.update({
     where: { id: product.id },

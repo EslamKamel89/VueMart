@@ -150,8 +150,14 @@ onMounted(() => {
         </FormField>
       </div>
       <AdminProductImagesForm
-        :images="(product?.images ?? []).map((image) => image.url)"
-        @images-updated="(imgs) => form.setFieldValue('images', imgs)"
+        :images="product?.images ?? []"
+        @images-updated="
+          (imgs) =>
+            form.setFieldValue(
+              'images',
+              imgs.map((img) => img.id),
+            )
+        "
       />
       <Button
         @click="submit"

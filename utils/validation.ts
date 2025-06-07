@@ -67,10 +67,13 @@ export const productSchema = z.object({
 
   images: z.nullable(
     z
-      .array(z.string().url("Image URL must be a valid image link."), {
-        // required_error: "At least one image is required.",
-        invalid_type_error: "Images must be a list of URLs.",
-      })
+      .array(
+        //   z.string().url("Image URL must be a valid image link."), {
+        //   // required_error: "At least one image is required.",
+        //   invalid_type_error: "Images must be a list of URLs.",
+        // })
+        z.number(),
+      )
       .default([]),
   ),
   // .nonempty({ message: "At least one image URL is required." }),
