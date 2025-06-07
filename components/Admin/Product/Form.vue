@@ -28,7 +28,7 @@ const submit = form.handleSubmit(async (values) => {
         `/api/admin/products/${props.product?.id}`,
         {
           method: "PUT",
-          body: values,
+          body: pr(values, "updated values"),
         },
       );
     }
@@ -60,6 +60,7 @@ onMounted(() => {
 <template>
   <DialogHeader>
     <DialogTitle>Create Product</DialogTitle>
+    {{ form.errors }}
   </DialogHeader>
   <form @submit.prevent="submit" class="flex flex-col space-y-3">
     <FormField v-slot="{ componentField }" name="name">

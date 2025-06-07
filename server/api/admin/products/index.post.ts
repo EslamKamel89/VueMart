@@ -2,7 +2,7 @@ import prisma from "~/utils/db";
 import slugify from "~/utils/slugify";
 import { productSchema } from "~/utils/validation";
 export default defineEventHandler(async (event) => {
-  //   const session = await requireUserSession(event);
+  const session = await requireUserSession(event);
   const body = await readValidatedBody(event, (values) =>
     productSchema.parseAsync(values),
   );

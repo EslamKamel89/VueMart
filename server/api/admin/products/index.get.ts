@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
           { category: { name: { contains: search } } },
         ],
       },
+      orderBy: { id: "desc" },
     })
     .withPages({
       limit,
