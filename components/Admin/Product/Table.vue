@@ -88,7 +88,7 @@ const handleClearSearch = () => {
         </div>
         <Dialog v-model:open="createModel">
           <DialogTrigger>
-            <Button>+ Product</Button>
+            <Button type="button">+ Product</Button>
           </DialogTrigger>
           <DialogContent>
             <AdminProductForm

@@ -61,7 +61,7 @@ onMounted(() => {
   <DialogHeader>
     <DialogTitle>Create Product</DialogTitle>
   </DialogHeader>
-  <form @submit.prevent="submit">
+  <form @submit.prevent="submit" class="flex flex-col space-y-3">
     <FormField v-slot="{ componentField }" name="name">
       <FormItem class="!gap-1">
         <FormLabel class="my-1">Name</FormLabel>
@@ -73,6 +73,31 @@ onMounted(() => {
           />
         </FormControl>
         <FormDescription />
+        <FormMessage />
+      </FormItem>
+    </FormField>
+    <FormField v-slot="{ componentField }" name="categoryId">
+      <FormItem>
+        <FormLabel>Category</FormLabel>
+
+        <Select v-bind="componentField">
+          <FormControl>
+            <SelectTrigger>
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+          </FormControl>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem
+                v-for="category in categories"
+                :key="category.id"
+                :value="category.id"
+              >
+                {{ category.name }}
+              </SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
         <FormMessage />
       </FormItem>
     </FormField>
