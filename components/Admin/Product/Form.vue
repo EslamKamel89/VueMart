@@ -28,7 +28,7 @@ const submit = form.handleSubmit(async (values) => {
         `/api/admin/products/${props.product?.id}`,
         {
           method: "PUT",
-          body: pr(values, "updated values"),
+          body: values,
         },
       );
     }

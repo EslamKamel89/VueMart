@@ -136,8 +136,8 @@ const handleClearSearch = () => {
           </template>
           <template v-else>
             <template v-if="products.length">
-              <TableRow v-for="product in products" :key="product.id">
-                <TableCell class="font-medium">{{ product.id }}</TableCell>
+              <TableRow v-for="(product, index) in products" :key="product.id">
+                <TableCell class="font-medium">{{ index + 1 }}</TableCell>
                 <TableCell>
                   {{ product.name }}
                 </TableCell>
@@ -191,12 +191,16 @@ const handleClearSearch = () => {
       <template v-else>
         <template v-if="products.length">
           <Card
-            v-for="product in products"
+            v-for="(product, index) in products"
             :key="product.id"
             class="hover:bg-muted p-4 transition-colors"
           >
             <div class="flex flex-col space-y-2">
-              <p class="text-muted-foreground text-sm">ID: {{ product.id }}</p>
+              <p
+                class="bg-primary border-primary shadow-primary w-fit rounded-full border px-2 py-1 text-sm text-white shadow"
+              >
+                {{ index + 1 }}
+              </p>
               <h3 class="text-lg font-bold">{{ product.name }}</h3>
               <Separator />
               <SharedCustomToolTip description="Product Color" class="">
