@@ -65,39 +65,48 @@ const handleClearSearch = () => {
 <template>
   <div class="w-full">
     <!-- Search & Create Dialog -->
-    <div class="my-2 flex w-full justify-center space-x-2">
-      <div class="flex w-full grow-1 !rounded-e-none">
-        <input
-          placeholder="Search.."
-          v-model="search"
-          class="w-full rounded-s-lg rounded-e-none border border-e-0 border-gray-700 ps-4 placeholder:text-xs"
-        />
-        <Button v-if="search" class="!rounded-none" @click="handleClearSearch">
-          <SearchX />
-        </Button>
-
-        <Button class="!rounded-s-none" @click="handleSearch">
-          <Search />
-        </Button>
-      </div>
-      <Dialog v-model:open="createModel">
-        <DialogTrigger>
-          <Button>+ Product</Button>
-        </DialogTrigger>
-        <DialogContent>
-          <AdminProductForm
-            @submit="refetchData"
-            type="create"
-            :categories="categories ?? []"
+    <form @submit.prevent="handleSearch" class="h-full w-full">
+      <div class="my-2 flex w-full justify-center space-x-2">
+        <div class="flex w-full grow-1 !rounded-e-none">
+          <input
+            placeholder="Search.."
+            v-model="search"
+            class="w-full rounded-s-lg rounded-e-none border border-e-0 border-gray-700 ps-4 placeholder:text-xs"
           />
-        </DialogContent>
-      </Dialog>
-    </div>
+          <Button
+            type="button"
+            v-if="search"
+            class="!rounded-none"
+            @click="handleClearSearch"
+          >
+            <SearchX />
+          </Button>
+
+          <Button type="submit" class="!rounded-s-none">
+            <Search />
+          </Button>
+        </div>
+        <Dialog v-model:open="createModel">
+          <DialogTrigger>
+            <Button>+ Product</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <AdminProductForm
+              @submit="refetchData"
+              type="create"
+              :categories="categories ?? []"
+            />
+          </DialogContent>
+        </Dialog>
+      </div>
+    </form>
 
     <!-- Desktop Table (Visible on lg+) -->
     <div class="hidden overflow-x-auto md:block">
       <Table :products="products">
-        <TableCaption>A list of all products.</TableCaption>
+        <!--
+          <TableCaption>A list of all products.</TableCaption>
+        -->
         <TableHeader>
           <TableRow>
             <TableHead class="w-[100px]">Id</TableHead>
@@ -126,27 +135,40 @@ const handleClearSearch = () => {
             </TableRow>
           </template>
           <template v-else>
-            <TableRow v-for="product in products" :key="product.id">
-              <TableCell class="font-medium">{{ product.id }}</TableCell>
-              <TableCell>
-                {{ product.name }}
-              </TableCell>
-              <TableCell>
-                <SharedColor :color="product.color" />
-              </TableCell>
-              <TableCell>{{ product.price }}</TableCell>
-              <TableCell>{{ product.category?.name }}</TableCell>
-              <TableCell>
-                {{ tableDateFormatter(product.createdAt) }}</TableCell
-              >
-              <TableCell class="text-right">
-                <AdminProductActions
-                  :product="product"
-                  @submit="refetchData"
-                  :categories="categories ?? []"
-                />
-              </TableCell>
-            </TableRow>
+            <template v-if="products.length">
+              <TableRow v-for="product in products" :key="product.id">
+                <TableCell class="font-medium">{{ product.id }}</TableCell>
+                <TableCell>
+                  {{ product.name }}
+                </TableCell>
+                <TableCell>
+                  <SharedColor :color="product.color" />
+                </TableCell>
+                <TableCell>{{ product.price }}</TableCell>
+                <TableCell>{{ product.category?.name }}</TableCell>
+                <TableCell>
+                  {{ tableDateFormatter(product.createdAt) }}</TableCell
+                >
+                <TableCell class="text-right">
+                  <AdminProductActions
+                    :product="product"
+                    @submit="refetchData"
+                    :categories="categories ?? []"
+                  />
+                </TableCell>
+              </TableRow>
+            </template>
+            <template v-else>
+              <TableRow>
+                <TableCell colspan="7">
+                  <div
+                    class="text-muted-foreground my-4 flex w-full items-center justify-center text-xs"
+                  >
+                    No products found
+                  </div>
+                </TableCell>
+              </TableRow>
+            </template>
           </template>
         </TableBody>
       </Table>
@@ -167,38 +189,47 @@ const handleClearSearch = () => {
         </Card>
       </template>
       <template v-else>
-        <Card
-          v-for="product in products"
-          :key="product.id"
-          class="hover:bg-muted p-4 transition-colors"
-        >
-          <div class="flex flex-col space-y-2">
-            <p class="text-muted-foreground text-sm">ID: {{ product.id }}</p>
-            <h3 class="text-lg font-bold">{{ product.name }}</h3>
-            <Separator />
-            <SharedCustomToolTip description="Product Color" class="">
-              <div>
-                <SharedColor :color="product.color" />
+        <template v-if="products.length">
+          <Card
+            v-for="product in products"
+            :key="product.id"
+            class="hover:bg-muted p-4 transition-colors"
+          >
+            <div class="flex flex-col space-y-2">
+              <p class="text-muted-foreground text-sm">ID: {{ product.id }}</p>
+              <h3 class="text-lg font-bold">{{ product.name }}</h3>
+              <Separator />
+              <SharedCustomToolTip description="Product Color" class="">
+                <div>
+                  <SharedColor :color="product.color" />
+                </div>
+              </SharedCustomToolTip>
+              <SharedCustomToolTip description="Product Price">
+                <div class="">${{ product.price }}</div>
+              </SharedCustomToolTip>
+              <SharedCustomToolTip description="Category Name">
+                <div class="">{{ product.category?.name }}</div>
+              </SharedCustomToolTip>
+              <div class="mt-4 flex w-full flex-col items-end space-y-1">
+                <p class="text-right text-sm text-gray-500 dark:text-gray-400">
+                  {{ tableDateFormatter(product.createdAt) }}
+                </p>
+                <AdminProductActions
+                  :product="product"
+                  @submit="refetchData"
+                  :categories="categories ?? []"
+                />
               </div>
-            </SharedCustomToolTip>
-            <SharedCustomToolTip description="Product Price">
-              <div class="">${{ product.price }}</div>
-            </SharedCustomToolTip>
-            <SharedCustomToolTip description="Category Name">
-              <div class="">{{ product.category?.name }}</div>
-            </SharedCustomToolTip>
-            <div class="mt-4 flex w-full flex-col items-end space-y-1">
-              <p class="text-right text-sm text-gray-500 dark:text-gray-400">
-                {{ tableDateFormatter(product.createdAt) }}
-              </p>
-              <AdminProductActions
-                :product="product"
-                @submit="refetchData"
-                :categories="categories ?? []"
-              />
             </div>
-          </div>
-        </Card>
+          </Card>
+        </template>
+        <template v-else>
+          <Card class="hover:bg-muted p-4 transition-colors">
+            <div class="flex w-full flex-row justify-center">
+              <h3 class="text-muted-foreground text-xs">No Products found</h3>
+            </div>
+          </Card>
+        </template>
       </template>
     </div>
     <SharedPagination
