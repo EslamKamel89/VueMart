@@ -32,6 +32,10 @@ const handleImageUpdate = async (imgFiles: FileList) => {
     handleApiError(error);
   }
 };
+const handleImageDelete = (imageId: number) => {
+  updatedImages.value = updatedImages.value.filter((img) => img.id != imageId);
+  emit("imagesUpdated", updatedImages.value);
+};
 </script>
 <template>
   <div>
@@ -44,6 +48,7 @@ const handleImageUpdate = async (imgFiles: FileList) => {
       <div v-for="image in updatedImages" :key="image.id" class="relative">
         <img :src="image.url" class="h-32 rounded shadow" />
         <Trash2
+          @click="handleImageDelete(image.id)"
           class="absolute -top-4 -right-4 h-9 w-9 cursor-pointer rounded-full bg-gray-100 px-2 py-1 text-red-500"
         />
       </div>

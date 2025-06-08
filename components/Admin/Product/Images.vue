@@ -17,7 +17,7 @@ const props = defineProps<{
     </div>
   </template>
   <template v-else>
-    <div class="flex w-full justify-center">
+    <div class="flex w-full justify-start md:justify-center">
       <ImageOff />
     </div>
   </template>
