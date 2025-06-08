@@ -16,9 +16,13 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Product not found in the database",
     });
   }
+  await prisma.image.updateMany({
+    where: { productId },
+    data: { productId: null },
+  });
   product = await prisma.product.update({
     where: { id: productId },
-    data: { ...body, images: undefined },
+    data: { ...body, images: { connect: body.images?.map((id) => ({ id })) } },
   });
   return product;
 });

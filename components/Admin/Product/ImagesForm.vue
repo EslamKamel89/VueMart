@@ -24,7 +24,7 @@ const handleImageUpdate = async (imgFiles: FileList) => {
         body: formData,
       },
     );
-    pr("upload image in ImagesForm component");
+    // pr("upload image in ImagesForm component");
     updatedImages.value = [...updatedImages.value, ...images];
     imageUploadElement.value?.resetImages();
     emit("imagesUpdated", updatedImages.value);
