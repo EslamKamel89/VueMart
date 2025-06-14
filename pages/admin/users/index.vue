@@ -5,5 +5,5 @@ definePageMeta({
 });
 </script>
 <template>
-  <div>Users page</div>
+  <AdminUserTable />
 </template>
